@@ -1,11 +1,11 @@
 # Site title
-title: "@jasonrudolph"
+title: "@anuragsarkar97"
 
 # A description of your site for social meta tag and search engines
-description: "Jason Rudolph - Programmer, consultant, speaker, and author specializing in Ruby and Rails"
+description: "Anurag Sakar - Programmer, consultant, speaker, and hobbyist specializing in building and breaking stuff"
 
 # The base hostname & protocol of your site for where absolute urls are needed
-url: "http://jasonrudolph.com"
+url: "http://anuragsarkar97.me"
 
 # The subpath of your site, e.g. /blog, for generating urls
 baseurl: ""
@@ -30,8 +30,8 @@ nav:
 
 # Author information
 author:
-  name: Jason Rudolph
-  bio: Engineer at GitHub, runner, world traveler, and aspiring cookist
+  name: Anurag Sarkar
+  bio: Engineer at OYO Rooms, footballer, traveler and aspiring cookist
   avatar: /images/jasonrudolph.jpg
 
 # The "read next" posts to recommend at the bottom of each post
