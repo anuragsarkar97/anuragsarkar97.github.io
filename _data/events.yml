@@ -1,16 +1,11 @@
-- name: "TRI REST"
-  date: 2015-09-01
-  location: Cary, NC
+- name: "IEEE R10 SESSIONS"
+  date: 2017-09-01
+  location: Vellore, IN
   talks:
-    - url: http://www.meetup.com/TRI-REST/events/225101366/
-      title: "The Heroku HTTP API Toolchain"
+      title: "Deep learning is for everyone"
 
-- name: "Python Namibia"
+- name: "Blockchain fundamentals"
   date: 2015-02-01
-  location: Windhoek, Namibia
+  location: Vellore, IN
   talks:
-    - url: http://python-namibia.org/event/introduction-git-and-github/
-      title: "Introduction to Git and GitHub"
-  copresenters:
-    - name: Shay Frendt
-      url: https://twitter.com/shayfrendt
+      title: "Introduction to Blockchain and Hyperledger community"
