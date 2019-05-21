@@ -17,7 +17,7 @@ image:
 disqus_shortname:
 
 # Your Google Analytics tracking code
-google_analytics_tracking_id: "UA-4605088-1"
+google_analytics_tracking_id: "UA-140492797-1"
 
 # Site navigation
 nav:
@@ -32,16 +32,16 @@ nav:
 author:
   name: Anurag Sarkar
   bio: Engineer at OYO Rooms, footballer, traveler and aspiring cookist
-  avatar: /images/jasonrudolph.jpg
+  avatar: /images/anurag.jpeg
 
 # The "read next" posts to recommend at the bottom of each post
 recommended_posts:
-  - url: /blog/2014/03/02/defining-atom-commands-in-your-init-script/
-  - url: /blog/2013/01/23/as-creative-as-we-make-time-to-be/
-  - url: /blog/2011/08/09/programming-achievements-how-to-level-up-as-a-developer/
-  - url: /blog/2009/05/27/git-up-10-reasons-to-upgrade-your-old-git-installation/
-  - url: /blog/2008/06/17/testing-anti-patterns-incidental-coverage/
-  - url: /blog/2012/09/11/clojurescript-4-things-that-might-worry-you-but-should-not/
+  # - url: /blog/2014/03/02/defining-atom-commands-in-your-init-script/
+  # - url: /blog/2013/01/23/as-creative-as-we-make-time-to-be/
+  # - url: /blog/2011/08/09/programming-achievements-how-to-level-up-as-a-developer/
+  # - url: /blog/2009/05/27/git-up-10-reasons-to-upgrade-your-old-git-installation/
+  # - url: /blog/2008/06/17/testing-anti-patterns-incidental-coverage/
+  # - url: /blog/2012/09/11/clojurescript-4-things-that-might-worry-you-but-should-not/
 
 # Extra Open Graph and Twitter Cards settings for social sharing
 
@@ -50,7 +50,7 @@ recommended_posts:
 og_image:
 
 # twitter:site. Your Twitter username without "@"
-twitter_site: jasonrudolph
+# twitter_site: jasonrudolph // TODO : might add back 
 
 permalink: pretty
 markdown: kramdown
