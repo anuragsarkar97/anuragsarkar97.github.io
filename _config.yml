@@ -5,7 +5,7 @@ title: "@anuragsarkar97"
 description: "Anurag Sakar - Programmer, consultant, speaker, and hobbyist specializing in building and breaking stuff"
 
 # The base hostname & protocol of your site for where absolute urls are needed
-url: "http://anuragsarkar97.me"
+url: "http://anuragsarkar.me"
 
 # The subpath of your site, e.g. /blog, for generating urls
 baseurl: ""
