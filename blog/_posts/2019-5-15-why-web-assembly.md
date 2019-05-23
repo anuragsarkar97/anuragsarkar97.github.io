@@ -9,11 +9,12 @@ tags:
 - emscripten
 ---
 
-WASM for WEB
+WASM for WEB (PART I)
 -
 You might have seen the Google I/O '19 and also all the talks about webassembly and why it is so amazing or as I like to the future.
 
 **Definition**  - WebAssembly (often shortened to Wasm) is a set of standards that define a portable (modular) binary format and a corresponding assembly-like programming language for executable program and environment-specific program interfaces into which it may be embedded and interact with. It was initially developed to improve JavaScript applications performance and to be used inside Web browsers but it isn't constrained to them and can be embedded anywhere else.
+
 Javascript is pretty much exhausted in almost everyway and also in terms of performace. 
 We need something that can provide native like performance in the browser. 
 Well, you might have heard that it a c++/rust thing to begin with but it's not a 100% correct. You can also code in golang (development phase)
@@ -93,6 +94,12 @@ em++ ../cpp/main.cpp -g -s EXPORT_ALL=1 -s MODULARIZE=1 -s EXPORT_NAME='assembly
 mv main.js ../web/gen/
 mv main.wasm ../web/gen/
 ```
+Also add:
+
+ ```source /Users/oyo/tmp/emsdk/emsdk_env.sh --build=Release > /dev/null``` 
+ 
+ this your ```~\.bashrc```
+
 
 LET'S CODE
 -
@@ -138,3 +145,9 @@ Let's start with our ```index.html```
 Understanding the script tag is very important because the webassembly code cannot be executed until the website is completely initialized.
 ```assembly()``` function is the name given while ```EXPORT_NAME='value'``` was set. This function provides with a ```.then()``` like interface to process our c++ compiled code further.
 
+now when you open your web console you can see random numbers. **YaY**
+you now have a working prototype of WASM. 
+
+In the next part we will be looking at how to integrate it with different web components.
+
+Peace 😎
