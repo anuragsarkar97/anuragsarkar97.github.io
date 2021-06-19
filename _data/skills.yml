@@ -1,12 +1,13 @@
 # Skills
-# Organizational leadership
-- skill: Organizational leadership
-  description: I have several years of experience leading organziations from community groups to business departments. From public speaking, to mentoring, to coordination of people and events, I can lead in any context.
 
-# Communications strategy
-- skill: Communications strategy
-  description: Content and marketing strategy,
+- skill: Can Code
+  description: I have several years of experience coding
 
-# Digital content development and creation
-- skill: Digital content development and creation
-  description: Copy writing, graphic design, web design, front-end web development, print design
+- skill: Can document 
+  description: I have several years of experience writing technical documents of my code. 
+
+- skill: Can test 
+  description: I have several years of experience writing tests for my code. 
+
+- skill: Can Play guitar
+  description: I have several years of experience playing guitar (AC/CD, green day, led zeplin etc ...)
