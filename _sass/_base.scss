@@ -1,166 +1,46 @@
-*,
-*:before,
-*:after {
+// Base styles
+// ---------------------------------------/
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
-body {
-  background-color: #fbfbfb;
-  background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 150px);
-  background-image: linear-gradient(to bottom, rgba(#fff, .5), rgba(#fff, 0) 150px);
-  background-repeat: no-repeat;
-  color: #333;
-  font-family: "Open Sans", sans-serif;
-  font-size: 18px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  line-height: 28px;
-  margin: 0;
-  padding: 0;
-  text-rendering: optimizeLegibility;
-
-  @include breakpoint {
-    font-size: 20px;
-    line-height: 30px;
-  }
+html {
+  background: $white;
 }
 
-a {
-  color: #333;
-  text-decoration: none;
-  transition: border-color .1s, color .1s;
+body{
+  @include serif;
+  color: $text_color;
+  font-size: 16px;
+  line-height: 1.5;
 }
 
-a:hover {
-  color: #000;
+.wrapper:before,
+.wrapper:after { content:""; display:table; }
+.wrapper:after { clear: both; }
+.wrapper {
+  max-width: 728px;
+  padding: 0 24px;
+  margin: 0 auto;
+  zoom: 1;
 }
 
-p,
-dl,
-dd,
-ul,
-ol,
-blockquote,
-pre,
-table {
-  margin: 0 0 28px;
+// clearfix (now called group,
+// via http://css-tricks.com/snippets/css/clear-fix/)
+.group:before,
+.group:after { content:""; display:table; }
+.group:after { clear:both; }
+.group { zoom:1; /* For IE 6/7 (trigger hasLayout) */ }
 
-  @include breakpoint {
-    margin: 0 0 30px;
-  }
+::-moz-selection {
+    background: rgba(51,51,51,.8);
+    color: #fff;
+    text-shadow: none;
 }
-
-dt {
-  font-weight: bold;
-}
-
-ul,
-ol {
-  ul,
-  ol {
-    margin-bottom: 0;
-  }
-}
-
-ul {
-  list-style: disc;
-}
-
-blockquote {
-  font-size: 21px;
-  font-style: italic;
-  padding: 7px 0;
-
-  @include breakpoint {
-    font-size: 25px;
-    padding-bottom: 15px;
-    padding-top: 15px;
-  }
-
-  p:last-child {
-    margin-bottom: 0;
-  }
-
-  .attribution {
-    margin-top: -20px;
-    font-size: 16px;
-    font-style: normal;
-  }
-}
-
-pre,
-code {
-  font-family: "DejaVu Sans Mono", Menlo, Consolas, monospace;
-}
-
-code {
-  color: #000;
-}
-
-pre {
-  font-size: 14px;
-  line-height: 21px;
-  padding: 7px 20px;
-  word-break: normal;
-  word-wrap: normal;
-
-  @include breakpoint {
-    font-size: 16px;
-    line-height: 25px;
-    padding-bottom: 15px;
-    padding-top: 15px;
-  }
-}
-
-img {
-  height: auto;
-  max-width: 100%;
-  vertical-align: middle;
-}
-
-svg {
-  fill: currentColor;
-}
-
-hr {
-  border: 0;
-  border-bottom: 1px solid #eee;
-  margin: 28px 0;
-
-  @include breakpoint {
-    margin: 30px 0;
-  }
-}
-
-table {
-  border-bottom: 1px solid #eee;
-  border-collapse: collapse;
-  margin-left: -10px;
-  margin-right: -10px;
-  width: 100%;
-}
-
-caption,
-th,
-td {
-  padding: 7px 10px;
-  text-align: left;
-
-  @include breakpoint {
-    padding-bottom: 5px;
-    padding-top: 5px;
-  }
-}
-
-caption {
-  color: #aaa;
-  font-style: italic;
-}
-
-tr {
-  border-top: 1px solid #eee;
-}
-
-main > *:last-child {
-  margin-bottom: 0;
+::selection {
+    background: rgba(51,51,51,.8);
+    color: #fff;
+    text-shadow: none;
 }

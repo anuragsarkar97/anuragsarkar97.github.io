@@ -1,61 +1,63 @@
-# Site title
-title: "@anuragsarkar97"
+# Site settings
+title: "Jekyll Resume Template"
+description: "A resume template for Jekyll and GitHub Pages sites."
 
-# A description of your site for social meta tag and search engines
-description: "Anurag Sakar - Programmer, consultant, speaker, and hobbyist specializing in building and breaking stuff"
-
-# The base hostname & protocol of your site for where absolute urls are needed
-url: "http://anuragsarkar.me"
-
-# The subpath of your site, e.g. /blog, for generating urls
-baseurl: ""
-
-# The site cover image on the home page
-image:
-
-# The shortname for your Disqus site to enable comments
-disqus_shortname:
-
-# Your Google Analytics tracking code
-google_analytics_tracking_id: "UA-140492797-1"
-
-# Site navigation
-nav:
-  - title: "Home"
-    url:   "/"
-  - title: "Talks"
-    url:   "/events"
-  - title: "About"
-    url:   "/about"
-
-# Author information
-author:
-  name: Anurag Sarkar
-  bio: Engineer at OYO Rooms, footballer, traveler and aspiring cookist
-  avatar: /images/anurag.jpeg
-
-# The "read next" posts to recommend at the bottom of each post
-recommended_posts:
-  # - url: /blog/2014/03/02/defining-atom-commands-in-your-init-script/
-  # - url: /blog/2013/01/23/as-creative-as-we-make-time-to-be/
-  # - url: /blog/2011/08/09/programming-achievements-how-to-level-up-as-a-developer/
-  # - url: /blog/2009/05/27/git-up-10-reasons-to-upgrade-your-old-git-installation/
-  # - url: /blog/2008/06/17/testing-anti-patterns-incidental-coverage/
-  # - url: /blog/2012/09/11/clojurescript-4-things-that-might-worry-you-but-should-not/
-
-# Extra Open Graph and Twitter Cards settings for social sharing
-
-# Fallback og:image when no page.image or site.image. Facebook requires image be
-# at least 200 x 200 pixels.
-og_image:
-
-# twitter:site. Your Twitter username without "@"
-# twitter_site: jasonrudolph // TODO : might add back 
-
-permalink: pretty
+# Build settings
 markdown: kramdown
-kramdown:
-  input: GFM
-  hard_wrap: false
-gems:
-  - jekyll-redirect-from
+sass:
+  sass_dir: _sass
+  style: compressed
+
+# Resume settings
+resume_avatar:                  "true"
+resume_name:                    "Lisa M. Simpson"
+resume_title:                   "VP of Global Communications"
+
+# used for the contact button in _layouts/resume.html
+resume_contact_email:           "lisasimpson@youremailaddress.com"
+
+# the next two items are used for schema itemprops in _layouts/resume.html
+resume_contact_telephone:       "555-7334"
+resume_contact_address:         "742 Evergreen Terrace, Springfield"
+
+resume_header_contact_info:     "742 Evergreen Terrace, Springfield • 555-7334 • lisasimpson@youremailaddress.com"
+display_header_contact_info:    "false"
+
+resume_header_intro: "<p>This is the executive summary. You should write a few brief, concise, and meaningful sentences about yourself from a professional context, and your immediate career goals. Make the length appropriate for your needs, but keep it brief and concise</p>"
+
+# use "yes" to display the email contact button,
+# "no" to display an "I'm not looking for work" message,
+# or remove the resume_looking_for_work option entirely
+# to leave blank
+resume_looking_for_work:        "yes"
+
+# Decide which sections to use
+# comment out to hide
+resume_section_experience:      true
+resume_section_education:       true
+resume_section_projects:        true
+resume_section_skills:          true
+resume_section_recognition:     true
+resume_section_links:           true
+resume_section_associations:    true
+# resume_section_interests:       true
+
+# Resume social links
+# uncomment the options you wish to display, and add your own URL
+resume_social_links:
+  resume_github_url:            "https://github.com/jglovier/resume-template"
+  resume_twitter_url:           "http://twitter.com/jglovier"
+  resume_dribbble_url:          "https://dribbble.com/jag"
+  # resume_facebook_url:          "insert Facebook URL here"
+  resume_linkedin_url:          "https://www.linkedin.com/in/joelglovier"
+  # resume_instagram_url:         "insert your Instagram URL here"
+  resume_website_url:           "http://joelglovier.com"
+  resume_medium_url:            "https://medium.com/@jglovier"
+resume_print_social_links:      true
+
+# Design settings
+resume_theme:                   default
+
+# Note: when editing locally, remember to restart
+# your Jekyll server when you edit this file. Changes
+# to _config.yml are only recognized when the server starts
