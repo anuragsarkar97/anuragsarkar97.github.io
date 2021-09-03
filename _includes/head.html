@@ -16,7 +16,8 @@
   <link rel="canonical" href="{{ page.url | absolute_url }}">
   {% endif %}
   <script type="text/javascript" >
-  console.log("{{ '../public/css/poole.css' | absolute_url }}")
+  console.log("this is one {{ '../public/css/poole.css' | absolute_url }}")
+  console.log("this is two {{ '/public/css/poole.css' | absolute_url }}")
   </script>
   <link rel="stylesheet" href="{{ '../public/css/poole.css' | absolute_url }}">
   <link rel="stylesheet" href="{{ '../public/css/syntax.css' | absolute_url }}">
