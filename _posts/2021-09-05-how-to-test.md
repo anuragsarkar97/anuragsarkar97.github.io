@@ -1,6 +1,7 @@
 ---
 layout: post
 title: How to write a test
+dem: There is a smart way and a boring way to test code. I never chose the smart way to write a test. I did what everyone else did. Dont be like me, write smart test and save yourself sometime to play FIFA.
 ---
 
 ```

@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Logging Like a Pro
+dem: Logging is Hard especially when it comes to microservices. Sometimes logs do not give enough information and sometimes so much that it is redundant
 ---
 
 ```

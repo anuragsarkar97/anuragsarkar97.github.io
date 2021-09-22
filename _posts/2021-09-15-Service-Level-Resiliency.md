@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Service Level Resiliency
+dem: Resiliency is the ability of a system to gracefully handle and recover from failures
 ---
 
 ```
