@@ -1,7 +1,7 @@
 # Setup
 title: Anurag Sarkar
-tagline: "Everyday blogs"
-description: "I write when I feel it is important to share something"
+tagline: "Engineering, one post at a time"
+description: "Notes on distributed systems, platform engineering, and the craft of building software that lasts."
 url: https://anuragsarkar97.github.io
 baseurl: ""
 paginate: 7

@@ -3,10 +3,25 @@ layout: page
 title: About
 ---
 
-<p class="message">
-  Hey there! This page belongs to Anurag. Anurag is a software engineer at Swiggy. He writes code mostly in Java, Golang and Python. Anurag likes motorcycling a lot. He is currently travelling to some far away place and he is out seeing his grandparents. 
-</p>
+Hey, I'm **Anurag Sarkar** — a software engineer who has spent years building large-scale distributed systems, most recently at AWS and Swiggy.
 
-When there is an ice cream parlor and they do not get ice cream, they never went to get ice cream, they just went where ice cream was. Life is a lot like the ice cream parlor and people are waiting for you to get it for them. The question is, will you?
+I write about things I've learned the hard way: breaking apart monoliths, designing APIs that don't haunt you later, building systems that survive production, and making sense of complexity at scale.
 
-Thanks for reading!
+---
+
+### What I work with
+
+**Languages:** Java &middot; Go &middot; Python  
+**Domains:** Distributed systems &middot; Platform engineering &middot; API design &middot; Observability  
+**Interests:** Making platforms feel less like platforms and more like superpowers
+
+---
+
+### Outside the editor
+
+Motorcycles. Long rides. Grandparents. The occasional philosophical detour about ice cream parlors and what they tell you about life.
+
+---
+
+**Find me:**  
+[GitHub](https://github.com/anuragsarkar97) &middot; [Email](mailto:sarkar.anurag@outlook.com)
