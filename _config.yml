@@ -1,10 +1,11 @@
 # Setup
 title: Anurag Sarkar
-tagline: "Engineering, one post at a time"
+tagline: "Distributed systems & platform engineering"
 description: "Notes on distributed systems, platform engineering, and the craft of building software that lasts."
 url: https://anuragsarkar97.github.io
 baseurl: ""
 paginate: 7
+paginate_path: /blog/page:num/
 permalink: pretty
 
 # About/contact

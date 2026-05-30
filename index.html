@@ -3,44 +3,57 @@ layout: default
 title: Home
 ---
 
-<div class="home-intro">
-  <p class="lead">Notes from the engineering trenches — distributed systems, platform architecture, and the craft of building software that lasts.</p>
+<div class="hero">
+  <p class="hero-eyebrow">Software Engineer</p>
+  <h1 class="hero-name">Anurag Sarkar</h1>
+  <p class="hero-role">Distributed Systems &middot; Platform Engineering</p>
+  <p class="hero-bio">
+    I build large-scale distributed systems and write about what I&rsquo;ve learned along the way &mdash; breaking apart monoliths, designing APIs that don&rsquo;t haunt you later, and making sense of complexity at scale.
+  </p>
+  <p class="hero-companies">
+    Previously <strong>AWS</strong><span>&middot;</span><strong>Swiggy</strong>
+  </p>
+  <div class="hero-cta">
+    <a href="{{ '/blog/' | absolute_url }}" class="btn btn-primary">Read my writing</a>
+    <a href="{{ '/about/' | absolute_url }}" class="btn btn-secondary">About me</a>
+    <a href="{{ site.author.url }}" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">GitHub &nearr;</a>
+  </div>
 </div>
 
-<div class="posts">
-  {% for post in paginator.posts %}
-  <div class="post">
-    <h1 class="post-title">
-      <a href="{{ post.url | absolute_url }}">{{ post.title }}</a>
-    </h1>
+<div class="skills-section">
+  <p class="section-label">What I work with</p>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <p class="skill-card-title">Distributed Systems</p>
+      <p class="skill-card-items">Consensus, fault tolerance, event-driven architecture</p>
+    </div>
+    <div class="skill-card">
+      <p class="skill-card-title">Platform Engineering</p>
+      <p class="skill-card-items">Internal developer platforms, tooling, paved paths</p>
+    </div>
+    <div class="skill-card">
+      <p class="skill-card-title">API Design</p>
+      <p class="skill-card-items">REST, gRPC, contract-first development</p>
+    </div>
+    <div class="skill-card">
+      <p class="skill-card-title">Observability</p>
+      <p class="skill-card-items">Metrics, tracing, logging, SLOs &amp; error budgets</p>
+    </div>
+  </div>
+</div>
 
-    <span class="post-date">{{ post.date | date: "%b %d, %Y" }}</span>
-
+<div class="recent-section">
+  <div class="recent-section-header">
+    <p class="section-label">Recent writing</p>
+    <a href="{{ '/blog/' | absolute_url }}" class="view-all-link">View all &rarr;</a>
+  </div>
+  {% for post in site.posts limit:4 %}
+  <div class="recent-post">
+    <p class="recent-post-date">{{ post.date | date: "%b %d, %Y" }}</p>
+    <h3 class="recent-post-title"><a href="{{ post.url | absolute_url }}">{{ post.title }}</a></h3>
     {% if post.dem %}
-    <p class="post-excerpt">{{ post.dem }}</p>
+    <p class="recent-post-excerpt">{{ post.dem }}</p>
     {% endif %}
   </div>
   {% endfor %}
-</div>
-
-<div class="pagination">
-  {% if paginator.next_page %}
-  <a
-    class="pagination-item older"
-    href="{{ paginator.next_page_path | absolute_url }}"
-    >Older posts</a
-  >
-  {% else %}
-  <span class="pagination-item older">Older posts</span>
-  {% endif %} {% if paginator.previous_page %} {% if paginator.page == 2 %}
-  <a class="pagination-item newer" href="{{ '/' | absolute_url }}">Newer posts</a>
-  {% else %}
-  <a
-    class="pagination-item newer"
-    href="{{ paginator.previous_page_path | absolute_url }}"
-    >Newer posts</a
-  >
-  {% endif %} {% else %}
-  <span class="pagination-item newer">Newer posts</span>
-  {% endif %}
 </div>
