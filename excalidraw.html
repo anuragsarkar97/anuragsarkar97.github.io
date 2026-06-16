@@ -1,0 +1,559 @@
+---
+layout: null
+title: Excalidraw
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>System Design Canvas — Anurag Sarkar</title>
+  <link rel="stylesheet" href="https://unpkg.com/@excalidraw/excalidraw@0.17.6/dist/excalidraw.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #0f0f17;
+      --surface: #16161f;
+      --border:  #2a2a3d;
+      --accent:  #7c6af7;
+      --text:    #cdd6f4;
+      --subtext: #6c6f93;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+
+    #page-wrap {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 20px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+      z-index: 10;
+    }
+
+    header .left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    header a.home {
+      color: var(--subtext);
+      text-decoration: none;
+      font-size: 0.82rem;
+      transition: color 0.2s;
+    }
+    header a.home:hover { color: var(--text); }
+
+    header h1 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+
+    .sep { color: var(--border); }
+
+    /* ── Library loader badge ── */
+    #lib-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      color: var(--subtext);
+    }
+
+    #lib-status .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+
+    #lib-status.done .dot {
+      background: #a6e3a1;
+      animation: none;
+    }
+
+    #lib-status.done { color: #a6e3a1; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+
+    /* ── Library button ── */
+    #open-lib-panel {
+      padding: 5px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--subtext);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    #open-lib-panel:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── Canvas root ── */
+    #excalidraw-root {
+      flex: 1;
+      min-height: 0;
+    }
+
+    /* ── Library side panel ── */
+    #lib-panel {
+      position: fixed;
+      top: 0;
+      right: -380px;
+      width: 360px;
+      height: 100vh;
+      background: var(--surface);
+      border-left: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      z-index: 200;
+      transition: right 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: hidden;
+    }
+
+    #lib-panel.open { right: 0; }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .panel-header h2 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .panel-close {
+      background: none;
+      border: none;
+      color: var(--subtext);
+      cursor: pointer;
+      font-size: 1.1rem;
+      padding: 4px;
+      line-height: 1;
+    }
+    .panel-close:hover { color: var(--text); }
+
+    .panel-body {
+      overflow-y: auto;
+      flex: 1;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .panel-section-title {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--subtext);
+      padding: 6px 0 4px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 2px;
+    }
+
+    .lib-card {
+      background: #1e1e2e;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      transition: border-color 0.15s;
+    }
+    .lib-card:hover { border-color: var(--accent); }
+
+    .lib-card-info { flex: 1; min-width: 0; }
+    .lib-card-info .lib-name {
+      font-size: 0.83rem;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .lib-card-info .lib-desc {
+      font-size: 0.72rem;
+      color: var(--subtext);
+      margin-top: 2px;
+      line-height: 1.4;
+    }
+
+    .lib-badge {
+      flex-shrink: 0;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 20px;
+      border: 1px solid;
+    }
+    .lib-badge.loading { border-color: var(--accent); color: var(--accent); }
+    .lib-badge.loaded  { border-color: #a6e3a1; color: #a6e3a1; }
+    .lib-badge.failed  { border-color: #e55b7a; color: #e55b7a; }
+
+    .panel-footer {
+      padding: 14px 18px;
+      border-top: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .panel-footer a {
+      display: block;
+      text-align: center;
+      padding: 9px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: all 0.15s;
+    }
+    .panel-footer a:hover { border-color: var(--accent); background: rgba(124,106,247,0.1); }
+
+    /* ── Backdrop ── */
+    #panel-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      z-index: 190;
+    }
+    #panel-backdrop.show { display: block; }
+  </style>
+</head>
+<body>
+<div id="page-wrap">
+  <header>
+    <div class="left">
+      <a href="/" class="home">← Home</a>
+      <span class="sep">|</span>
+      <h1>System Design Canvas</h1>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <div id="lib-status">
+        <div class="dot"></div>
+        <span id="lib-status-text">Loading system design libraries…</span>
+      </div>
+      <button id="open-lib-panel">Libraries</button>
+    </div>
+  </header>
+
+  <div id="excalidraw-root"></div>
+</div>
+
+<!-- Library side panel -->
+<div id="panel-backdrop"></div>
+<div id="lib-panel">
+  <div class="panel-header">
+    <h2>System Design Libraries</h2>
+    <button class="panel-close" id="close-lib-panel">✕</button>
+  </div>
+  <div class="panel-body" id="lib-list">
+
+    <div class="panel-section-title">Software Architecture</div>
+
+    <div class="lib-card" id="card-arch">
+      <div class="lib-card-info">
+        <div class="lib-name">Software Architecture Components</div>
+        <div class="lib-desc">Servers, services, queues, caches, load balancers &amp; more</div>
+      </div>
+      <span class="lib-badge loading" id="badge-arch">...</span>
+    </div>
+
+    <div class="lib-card" id="card-db">
+      <div class="lib-card-info">
+        <div class="lib-name">Database Symbols</div>
+        <div class="lib-desc">Relational, NoSQL, and graph database shapes</div>
+      </div>
+      <span class="lib-badge loading" id="badge-db">...</span>
+    </div>
+
+    <div class="lib-card" id="card-network">
+      <div class="lib-card-info">
+        <div class="lib-name">Network &amp; Infrastructure</div>
+        <div class="lib-desc">Routers, switches, firewalls, CDN, VPN shapes</div>
+      </div>
+      <span class="lib-badge loading" id="badge-network">...</span>
+    </div>
+
+    <div class="lib-card" id="card-uml">
+      <div class="lib-card-info">
+        <div class="lib-name">UML Diagrams</div>
+        <div class="lib-desc">Class, sequence, use-case, and component diagrams</div>
+      </div>
+      <span class="lib-badge loading" id="badge-uml">...</span>
+    </div>
+
+    <div class="panel-section-title">Cloud Providers</div>
+
+    <div class="lib-card" id="card-aws">
+      <div class="lib-card-info">
+        <div class="lib-name">AWS Architecture Icons</div>
+        <div class="lib-desc">EC2, S3, Lambda, RDS, SQS, DynamoDB &amp; more</div>
+      </div>
+      <span class="lib-badge loading" id="badge-aws">...</span>
+    </div>
+
+    <div class="lib-card" id="card-azure">
+      <div class="lib-card-info">
+        <div class="lib-name">Azure Architecture Icons</div>
+        <div class="lib-desc">Azure compute, storage, networking &amp; services</div>
+      </div>
+      <span class="lib-badge loading" id="badge-azure">...</span>
+    </div>
+
+    <div class="lib-card" id="card-gcp">
+      <div class="lib-card-info">
+        <div class="lib-name">Google Cloud Icons</div>
+        <div class="lib-desc">GCP compute, storage, data, &amp; ML services</div>
+      </div>
+      <span class="lib-badge loading" id="badge-gcp">...</span>
+    </div>
+
+    <div class="panel-section-title">Modern Infrastructure</div>
+
+    <div class="lib-card" id="card-k8s">
+      <div class="lib-card-info">
+        <div class="lib-name">Kubernetes / Cloud Native</div>
+        <div class="lib-desc">Pods, services, deployments, ingress, PVCs</div>
+      </div>
+      <span class="lib-badge loading" id="badge-k8s">...</span>
+    </div>
+
+    <div class="lib-card" id="card-devops">
+      <div class="lib-card-info">
+        <div class="lib-name">DevOps &amp; CI/CD</div>
+        <div class="lib-desc">Pipelines, containers, registries, monitoring shapes</div>
+      </div>
+      <span class="lib-badge loading" id="badge-devops">...</span>
+    </div>
+
+    <div class="lib-card" id="card-security">
+      <div class="lib-card-info">
+        <div class="lib-name">Security Architecture</div>
+        <div class="lib-desc">Auth flows, firewalls, encryption, IAM shapes</div>
+      </div>
+      <span class="lib-badge loading" id="badge-security">...</span>
+    </div>
+
+  </div>
+  <div class="panel-footer">
+    <a href="https://libraries.excalidraw.com/?theme=dark&sort=downloadCount&search=system+design" target="_blank" rel="noopener noreferrer">
+      Browse all libraries on libraries.excalidraw.com ↗
+    </a>
+  </div>
+</div>
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@excalidraw/excalidraw@0.17.6/dist/excalidraw.production.min.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  // ── Library catalog ─────────────────────────────────────────────────────────
+  // Each entry maps to a card/badge ID and a library URL.
+  // URLs fetched at runtime; failures update badge to "failed" and are skipped.
+  var LIBRARIES = [
+    {
+      id: 'arch',
+      urls: [
+        'https://libraries.excalidraw.com/libraries/avneesh0612/software-architecture-components/library.excalidrawlib',
+        'https://libraries.excalidraw.com/libraries/dbsstudio/software-architecture/library.excalidrawlib'
+      ]
+    },
+    {
+      id: 'db',
+      urls: [
+        'https://libraries.excalidraw.com/libraries/thetribelab/database-design/library.excalidrawlib',
+        'https://libraries.excalidraw.com/libraries/dbsstudio/database-symbols/library.excalidrawlib'
+      ]
+    },
+    {
+      id: 'network',
+      urls: [
+        'https://libraries.excalidraw.com/libraries/dimitrisnl/network-diagrams/library.excalidrawlib',
+        'https://libraries.excalidraw.com/libraries/thetribelab/network-diagrams/library.excalidrawlib'
+      ]
+    },
+    {
+      id: 'uml',
+      urls: [
+        'https://libraries.excalidraw.com/libraries/dbsstudio/uml-shapes/library.excalidrawlib',
+        'https://libraries.excalidraw.com/libraries/thetribelab/uml/library.excalidrawlib'
+      ]
+    },
+    {
+      id: 'aws',
+      urls: [
+        'https://libraries.excalidraw.com/libraries/r-kot/aws-architecture/library.excalidrawlib',
+        'https://libraries.excalidraw.com/libraries/nikalsson/aws-architect-icons/library.excalidrawlib'
+      ]
+    },
+    {
+      id: 'azure',
+      urls: [
+        'https://libraries.excalidraw.com/libraries/dimitrisnl/azure-icons/library.excalidrawlib',
+        'https://libraries.excalidraw.com/libraries/enricolucia/azure-icons/library.excalidrawlib'
+      ]
+    },
+    {
+      id: 'gcp',
+      urls: [
+        'https://libraries.excalidraw.com/libraries/dbsstudio/google-cloud-icons/library.excalidrawlib',
+        'https://libraries.excalidraw.com/libraries/thetribelab/gcp-icons/library.excalidrawlib'
+      ]
+    },
+    {
+      id: 'k8s',
+      urls: [
+        'https://libraries.excalidraw.com/libraries/r-kot/kubernetes/library.excalidrawlib',
+        'https://libraries.excalidraw.com/libraries/vu-sa/kubernetes/library.excalidrawlib'
+      ]
+    },
+    {
+      id: 'devops',
+      urls: [
+        'https://libraries.excalidraw.com/libraries/dbsstudio/devops/library.excalidrawlib',
+        'https://libraries.excalidraw.com/libraries/thetribelab/devops/library.excalidrawlib'
+      ]
+    },
+    {
+      id: 'security',
+      urls: [
+        'https://libraries.excalidraw.com/libraries/dbsstudio/security-architecture/library.excalidrawlib',
+        'https://libraries.excalidraw.com/libraries/thetribelab/security/library.excalidrawlib'
+      ]
+    }
+  ];
+
+  // ── Excalidraw init ──────────────────────────────────────────────────────────
+  var excalidrawAPI = null;
+  var pendingItems = [];
+
+  var root = ReactDOM.createRoot(document.getElementById('excalidraw-root'));
+
+  function onExcalidrawAPI(api) {
+    excalidrawAPI = api;
+    if (pendingItems.length) {
+      api.updateLibrary({ libraryItems: pendingItems, merge: true });
+      pendingItems = [];
+    }
+  }
+
+  root.render(
+    React.createElement(ExcalidrawLib.Excalidraw, {
+      excalidrawAPI: onExcalidrawAPI,
+      theme: 'dark',
+      UIOptions: {
+        canvasActions: {
+          changeViewBackgroundColor: true,
+          clearCanvas: true,
+          export: { saveFileToDisk: true },
+          saveToActiveFile: true
+        }
+      }
+    })
+  );
+
+  // ── Badge helpers ────────────────────────────────────────────────────────────
+  function setBadge(id, state) {
+    var el = document.getElementById('badge-' + id);
+    if (!el) return;
+    el.className = 'lib-badge ' + state;
+    el.textContent = state === 'loading' ? '...' : state === 'loaded' ? 'Loaded' : 'Not found';
+  }
+
+  // ── Fetch a library (try each URL in order) ──────────────────────────────────
+  async function tryFetchLib(entry) {
+    for (var i = 0; i < entry.urls.length; i++) {
+      try {
+        var res = await fetch(entry.urls[i]);
+        if (!res.ok) continue;
+        var data = await res.json();
+        if (data && Array.isArray(data.libraryItems) && data.libraryItems.length) {
+          return data.libraryItems;
+        }
+      } catch (_) { /* next URL */ }
+    }
+    return null;
+  }
+
+  // ── Load all libraries ───────────────────────────────────────────────────────
+  async function loadLibraries() {
+    var loaded = 0;
+    var total  = LIBRARIES.length;
+
+    await Promise.all(LIBRARIES.map(async function (entry) {
+      var items = await tryFetchLib(entry);
+      if (items) {
+        loaded++;
+        setBadge(entry.id, 'loaded');
+        if (excalidrawAPI) {
+          excalidrawAPI.updateLibrary({ libraryItems: items, merge: true });
+        } else {
+          pendingItems = pendingItems.concat(items);
+        }
+      } else {
+        setBadge(entry.id, 'failed');
+      }
+    }));
+
+    var statusEl   = document.getElementById('lib-status');
+    var statusText = document.getElementById('lib-status-text');
+    statusEl.className = 'done';
+    statusText.textContent = loaded + ' of ' + total + ' libraries loaded';
+  }
+
+  loadLibraries();
+
+  // ── Panel toggle ─────────────────────────────────────────────────────────────
+  var panel     = document.getElementById('lib-panel');
+  var backdrop  = document.getElementById('panel-backdrop');
+
+  function openPanel()  { panel.classList.add('open');  backdrop.classList.add('show'); }
+  function closePanel() { panel.classList.remove('open'); backdrop.classList.remove('show'); }
+
+  document.getElementById('open-lib-panel').addEventListener('click', openPanel);
+  document.getElementById('close-lib-panel').addEventListener('click', closePanel);
+  backdrop.addEventListener('click', closePanel);
+})();
+</script>
+</body>
+</html>
