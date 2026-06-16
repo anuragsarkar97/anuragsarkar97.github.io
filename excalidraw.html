@@ -1,0 +1,732 @@
+---
+layout: null
+title: Excalidraw
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>System Design Canvas &mdash; Anurag Sarkar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/@excalidraw/excalidraw@0.17.3/dist/excalidraw.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sb-bg:           #1C1916;
+      --sb-border:       rgba(255,255,255,.08);
+      --sb-text:         #F5EEE5;
+      --sb-muted:        #A8998E;
+      --sb-subtle:       rgba(168,153,142,.55);
+      --sb-accent:       #CC4400;
+      --sb-accent-bg:    rgba(204,68,0,.14);
+      --sb-hover:        rgba(255,255,255,.05);
+      --sb-width:        272px;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Figtree', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow: hidden;
+      background: #1C1916;
+    }
+
+    /* ─── Topbar ──────────────────────────────── */
+    #topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 42px;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-align-items: center;
+              align-items: center;
+      gap: .75rem;
+      padding: 0 1rem;
+      background: var(--sb-bg);
+      border-bottom: 1px solid var(--sb-border);
+      z-index: 200;
+    }
+
+    .tb-back {
+      display: -webkit-flex;
+      display: flex;
+      -webkit-align-items: center;
+              align-items: center;
+      gap: .3rem;
+      font-size: .75rem;
+      font-weight: 500;
+      color: var(--sb-muted);
+      text-decoration: none;
+      -webkit-transition: color .15s;
+              transition: color .15s;
+    }
+    .tb-back:hover { color: var(--sb-text); }
+    .tb-back svg { width: 13px; height: 13px; }
+
+    .tb-sep { width: 1px; height: 16px; background: var(--sb-border); }
+
+    .tb-title {
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--sb-text);
+      letter-spacing: -.01em;
+    }
+
+    .tb-badge {
+      font-size: .65rem;
+      font-weight: 700;
+      color: var(--sb-accent);
+      background: var(--sb-accent-bg);
+      padding: .15rem .42rem;
+      border-radius: 4px;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    .tb-spacer { -webkit-flex: 1; flex: 1; }
+
+    .tb-btn {
+      display: -webkit-flex;
+      display: flex;
+      -webkit-align-items: center;
+              align-items: center;
+      gap: .35rem;
+      font-size: .73rem;
+      font-weight: 500;
+      color: var(--sb-muted);
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 6px;
+      padding: .22rem .6rem;
+      cursor: pointer;
+      font-family: inherit;
+      -webkit-transition: all .15s;
+              transition: all .15s;
+    }
+    .tb-btn:hover { color: var(--sb-text); background: rgba(255,255,255,.1); }
+    .tb-btn svg { width: 12px; height: 12px; }
+
+    /* ─── Layout ──────────────────────────────── */
+    #layout {
+      display: -webkit-flex;
+      display: flex;
+      position: fixed;
+      top: 42px; left: 0; right: 0; bottom: 0;
+    }
+
+    /* ─── Library panel ───────────────────────── */
+    #lib-panel {
+      width: var(--sb-width);
+      -webkit-flex-shrink: 0;
+              flex-shrink: 0;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-flex-direction: column;
+              flex-direction: column;
+      background: var(--sb-bg);
+      border-right: 1px solid var(--sb-border);
+      overflow: hidden;
+      -webkit-transition: width .2s ease, opacity .2s ease;
+              transition: width .2s ease, opacity .2s ease;
+    }
+    #lib-panel.collapsed {
+      width: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .lp-header {
+      padding: .9rem 1rem .7rem;
+      border-bottom: 1px solid var(--sb-border);
+      -webkit-flex-shrink: 0;
+              flex-shrink: 0;
+    }
+    .lp-header h2 {
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+      color: var(--sb-muted);
+      margin: 0 0 .18rem;
+    }
+    .lp-header p {
+      font-size: .7rem;
+      color: var(--sb-subtle);
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    .lp-search {
+      padding: .6rem 1rem;
+      border-bottom: 1px solid var(--sb-border);
+      -webkit-flex-shrink: 0;
+              flex-shrink: 0;
+    }
+    .lp-search input {
+      width: 100%;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 6px;
+      padding: .38rem .6rem;
+      font-size: .74rem;
+      color: var(--sb-text);
+      font-family: inherit;
+      outline: none;
+      -webkit-transition: border-color .15s;
+              transition: border-color .15s;
+    }
+    .lp-search input::placeholder { color: var(--sb-subtle); }
+    .lp-search input:focus { border-color: rgba(204,68,0,.5); }
+
+    .lp-body {
+      -webkit-flex: 1;
+              flex: 1;
+      overflow-y: auto;
+      padding: .35rem 0;
+    }
+    .lp-body::-webkit-scrollbar { width: 4px; }
+    .lp-body::-webkit-scrollbar-track { background: transparent; }
+    .lp-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,.12); border-radius: 2px; }
+
+    /* Category groups */
+    .lp-group { margin-bottom: .1rem; }
+
+    .lp-group-hd {
+      display: -webkit-flex;
+      display: flex;
+      -webkit-align-items: center;
+              align-items: center;
+      gap: .45rem;
+      padding: .45rem 1rem;
+      cursor: pointer;
+      -webkit-user-select: none;
+              user-select: none;
+      -webkit-transition: background .1s;
+              transition: background .1s;
+    }
+    .lp-group-hd:hover { background: var(--sb-hover); }
+
+    .lp-cat-icon { font-size: .85rem; line-height: 1; -webkit-flex-shrink: 0; flex-shrink: 0; }
+    .lp-cat-name {
+      -webkit-flex: 1;
+              flex: 1;
+      font-size: .74rem;
+      font-weight: 600;
+      color: var(--sb-text);
+    }
+    .lp-cat-count {
+      font-size: .62rem;
+      color: var(--sb-muted);
+      background: rgba(255,255,255,.08);
+      padding: .1rem .32rem;
+      border-radius: 3px;
+    }
+    .lp-chevron {
+      width: 12px; height: 12px;
+      color: var(--sb-subtle);
+      -webkit-flex-shrink: 0;
+              flex-shrink: 0;
+      -webkit-transition: -webkit-transform .15s;
+              transition: transform .15s;
+    }
+    .lp-group.open .lp-chevron { -webkit-transform: rotate(90deg); transform: rotate(90deg); }
+
+    .lp-items { display: none; }
+    .lp-group.open .lp-items { display: block; }
+
+    .lp-item {
+      display: -webkit-flex;
+      display: flex;
+      -webkit-align-items: center;
+              align-items: center;
+      gap: .6rem;
+      padding: .5rem 1rem .5rem 2rem;
+      border-top: 1px solid rgba(255,255,255,.03);
+      -webkit-transition: background .1s;
+              transition: background .1s;
+    }
+    .lp-item:hover { background: var(--sb-hover); }
+
+    .lp-thumb {
+      width: 34px; height: 34px;
+      border-radius: 5px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.08);
+      overflow: hidden;
+      -webkit-flex-shrink: 0;
+              flex-shrink: 0;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-align-items: center;
+              align-items: center;
+      -webkit-justify-content: center;
+              justify-content: center;
+    }
+    .lp-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .lp-thumb-placeholder { font-size: .9rem; opacity: .4; }
+
+    .lp-info { -webkit-flex: 1; flex: 1; min-width: 0; }
+    .lp-name {
+      font-size: .72rem;
+      font-weight: 600;
+      color: var(--sb-text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.3;
+    }
+    .lp-author {
+      font-size: .64rem;
+      color: var(--sb-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .lp-add {
+      -webkit-flex-shrink: 0;
+              flex-shrink: 0;
+      font-size: .65rem;
+      font-weight: 600;
+      color: var(--sb-accent);
+      background: var(--sb-accent-bg);
+      border: 1px solid rgba(204,68,0,.2);
+      border-radius: 4px;
+      padding: .2rem .48rem;
+      cursor: pointer;
+      font-family: inherit;
+      -webkit-transition: all .15s;
+              transition: all .15s;
+      white-space: nowrap;
+    }
+    .lp-add:hover:not(:disabled) {
+      background: var(--sb-accent);
+      color: #fff;
+      border-color: var(--sb-accent);
+    }
+    .lp-add:disabled { opacity: .55; cursor: not-allowed; }
+    .lp-add.done {
+      color: #5bb974;
+      background: rgba(91,185,116,.13);
+      border-color: rgba(91,185,116,.22);
+    }
+    .lp-add.err {
+      color: #ef5350;
+      background: rgba(239,83,80,.12);
+      border-color: rgba(239,83,80,.2);
+    }
+
+    .lp-status {
+      padding: 2rem 1rem;
+      text-align: center;
+      font-size: .73rem;
+      color: var(--sb-muted);
+      line-height: 1.6;
+    }
+    .lp-status a {
+      color: var(--sb-accent);
+      text-decoration: none;
+    }
+    .lp-status a:hover { text-decoration: underline; }
+
+    .lp-footer {
+      padding: .65rem 1rem;
+      border-top: 1px solid var(--sb-border);
+      -webkit-flex-shrink: 0;
+              flex-shrink: 0;
+    }
+    .lp-footer a {
+      display: -webkit-flex;
+      display: flex;
+      -webkit-align-items: center;
+              align-items: center;
+      gap: .35rem;
+      font-size: .7rem;
+      color: var(--sb-muted);
+      text-decoration: none;
+      -webkit-transition: color .15s;
+              transition: color .15s;
+    }
+    .lp-footer a:hover { color: var(--sb-text); }
+
+    /* ─── Excalidraw canvas ───────────────────── */
+    #canvas {
+      -webkit-flex: 1;
+              flex: 1;
+      height: 100%;
+      min-width: 0;
+      position: relative;
+    }
+
+    /* ─── Toast ───────────────────────────────── */
+    #toast {
+      position: fixed;
+      bottom: 1.25rem;
+      right: 1.25rem;
+      padding: .6rem .9rem;
+      background: #28231e;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 8px;
+      font-size: .76rem;
+      color: var(--sb-text);
+      z-index: 500;
+      max-width: 300px;
+      -webkit-transform: translateY(80px);
+              transform: translateY(80px);
+      opacity: 0;
+      pointer-events: none;
+      -webkit-transition: all .22s ease;
+              transition: all .22s ease;
+    }
+    #toast.show { -webkit-transform: translateY(0); transform: translateY(0); opacity: 1; }
+    #toast.ok   { border-color: rgba(91,185,116,.35); }
+    #toast.bad  { border-color: rgba(239,83,80,.35); }
+  </style>
+</head>
+<body>
+
+  <!-- Topbar -->
+  <header id="topbar">
+    <a href="/" class="tb-back">
+      <svg viewBox="0 0 16 16" fill="currentColor">
+        <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+      </svg>
+      Anurag Sarkar
+    </a>
+    <div class="tb-sep"></div>
+    <span class="tb-title">System Design Canvas</span>
+    <span class="tb-badge">Excalidraw</span>
+    <div class="tb-spacer"></div>
+    <button class="tb-btn" onclick="togglePanel()" id="panel-btn">
+      <svg viewBox="0 0 16 16" fill="currentColor">
+        <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zm8 0A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm-8 8A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm8 0A1.5 1.5 0 0 1 10.5 9h3A1.5 1.5 0 0 1 15 10.5v3A1.5 1.5 0 0 1 13.5 15h-3A1.5 1.5 0 0 1 9 13.5v-3z"/>
+      </svg>
+      Libraries
+    </button>
+  </header>
+
+  <!-- Layout -->
+  <div id="layout">
+
+    <!-- Library panel -->
+    <aside id="lib-panel">
+      <div class="lp-header">
+        <h2>System Design Libraries</h2>
+        <p>Click Add to load shapes into the canvas</p>
+      </div>
+
+      <div class="lp-search">
+        <input
+          type="search"
+          id="search"
+          placeholder="Search libraries&hellip;"
+          oninput="onSearch(this.value)"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="lp-body" id="lib-body">
+        <div class="lp-status">Loading libraries&hellip;</div>
+      </div>
+
+      <div class="lp-footer">
+        <a href="https://libraries.excalidraw.com" target="_blank" rel="noopener noreferrer">
+          <svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor">
+            <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/>
+            <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/>
+          </svg>
+          Browse all libraries
+        </a>
+      </div>
+    </aside>
+
+    <!-- Excalidraw canvas -->
+    <div id="canvas"></div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast"></div>
+
+  <!-- React + Excalidraw via CDN -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@excalidraw/excalidraw@0.17.3/dist/excalidraw.production.min.js" crossorigin></script>
+
+  <script>
+  (function () {
+    'use strict';
+
+    // ── Categories for system design ─────────────────────────────────────────
+    var CATS = [
+      { id: 'aws',      label: 'AWS',                   icon: '☁️',  tags: ['aws', 'amazon', 'amazon-web-services', 's3', 'ec2', 'lambda'] },
+      { id: 'azure',    label: 'Azure',                 icon: '🔷',  tags: ['azure', 'microsoft-azure', 'microsoft azure'] },
+      { id: 'gcp',      label: 'Google Cloud',          icon: '🌐',  tags: ['gcp', 'google-cloud', 'google cloud'] },
+      { id: 'k8s',      label: 'Kubernetes & CNCF',     icon: '⎈',   tags: ['kubernetes', 'k8s', 'docker', 'container', 'cncf', 'cloud-native', 'helm'] },
+      { id: 'network',  label: 'Networking',            icon: '🔗',  tags: ['networking', 'network', 'topology', 'firewall', 'dns', 'load-balancer', 'load balancer'] },
+      { id: 'arch',     label: 'Software Architecture', icon: '🏗️',  tags: ['architecture', 'software-architecture', 'software architecture', 'microservices', 'backend', 'system-design', 'system design', 'api', 'service-mesh', 'event-driven'] },
+      { id: 'data',     label: 'Data & Storage',        icon: '🗄️',  tags: ['database', 'storage', 'data', 'cache', 'queue', 'messaging', 'kafka', 'redis', 'sql', 'nosql'] },
+      { id: 'uml',      label: 'UML & Diagrams',        icon: '📊',  tags: ['uml', 'diagram', 'flowchart', 'er-diagram', 'sequence', 'class-diagram', 'entity'] },
+      { id: 'infra',    label: 'Infrastructure & DevOps', icon: '🖥️', tags: ['infrastructure', 'infra', 'devops', 'ci-cd', 'monitoring', 'observability', 'terraform', 'ansible'] },
+    ];
+
+    // Merge all tags into one Set for quick "is this system-design?" check
+    var ALL_TAGS = new Set();
+    CATS.forEach(function (c) { c.tags.forEach(function (t) { ALL_TAGS.add(t); }); });
+
+    // ── State ────────────────────────────────────────────────────────────────
+    var api = null;
+    var allLibs = [];
+    var panelOpen = true;
+    var libBySource = {};
+
+    // ── Excalidraw bootstrap ─────────────────────────────────────────────────
+    function initExcalidraw() {
+      if (!window.ExcalidrawLib) {
+        document.getElementById('canvas').innerHTML =
+          '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#A8998E;font-size:.85rem;">' +
+          'Failed to load Excalidraw. Check your internet connection and refresh.</div>';
+        return;
+      }
+      var Excalidraw = ExcalidrawLib.Excalidraw;
+      var THEME = ExcalidrawLib.THEME;
+
+      function App() {
+        return React.createElement(Excalidraw, {
+          excalidrawAPI: function (a) { api = a; },
+          theme: THEME.DARK,
+          name: 'System Design Canvas',
+        });
+      }
+
+      ReactDOM.createRoot(document.getElementById('canvas'))
+        .render(React.createElement(App));
+    }
+
+    // ── Panel toggle ─────────────────────────────────────────────────────────
+    window.togglePanel = function () {
+      panelOpen = !panelOpen;
+      var p = document.getElementById('lib-panel');
+      if (panelOpen) {
+        p.classList.remove('collapsed');
+      } else {
+        p.classList.add('collapsed');
+      }
+    };
+
+    // ── Library categorisation ────────────────────────────────────────────────
+    function isSystemDesign(lib) {
+      var cats = (lib.categories || lib.tags || []).map(function (c) { return c.toLowerCase(); });
+      var text = ((lib.name || '') + ' ' + (lib.description || '')).toLowerCase();
+      // Match if any stored category tag appears in the lib's categories or text
+      for (var i = 0; i < cats.length; i++) {
+        if (ALL_TAGS.has(cats[i])) return true;
+      }
+      // Longer tag match in free text (avoid false positives from short tags)
+      var tagArr = Array.from(ALL_TAGS);
+      for (var j = 0; j < tagArr.length; j++) {
+        var t = tagArr[j];
+        if (t.length > 4 && text.indexOf(t) !== -1) return true;
+      }
+      return false;
+    }
+
+    function assignCategory(lib) {
+      var cats = (lib.categories || lib.tags || []).map(function (c) { return c.toLowerCase(); });
+      var text = ((lib.name || '') + ' ' + (lib.description || '')).toLowerCase();
+      for (var ci = 0; ci < CATS.length; ci++) {
+        var cat = CATS[ci];
+        for (var ti = 0; ti < cat.tags.length; ti++) {
+          var tag = cat.tags[ti];
+          if (cats.indexOf(tag) !== -1) return cat.id;
+          if (tag.length > 4 && text.indexOf(tag) !== -1) return cat.id;
+        }
+      }
+      return 'other';
+    }
+
+    function groupLibs(libs) {
+      var groups = {};
+      CATS.forEach(function (c) { groups[c.id] = []; });
+      groups.other = [];
+      libs.forEach(function (lib) {
+        var cat = assignCategory(lib);
+        groups[cat].push(lib);
+      });
+      return groups;
+    }
+
+    // ── Render ────────────────────────────────────────────────────────────────
+    function renderLibs(libs) {
+      var body = document.getElementById('lib-body');
+      if (!libs.length) {
+        body.innerHTML = '<div class="lp-status">No libraries match your search.</div>';
+        return;
+      }
+
+      var groups = groupLibs(libs);
+      var html = '';
+      var showCats = CATS.concat([{ id: 'other', label: 'Other', icon: '📦', tags: [] }]);
+
+      showCats.forEach(function (cat) {
+        var items = groups[cat.id];
+        if (!items || !items.length) return;
+
+        html += '<div class="lp-group open" id="g-' + cat.id + '">';
+        html += '<div class="lp-group-hd" onclick="toggleGroup(\'g-' + cat.id + '\')">';
+        html += '<span class="lp-cat-icon">' + cat.icon + '</span>';
+        html += '<span class="lp-cat-name">' + cat.label + '</span>';
+        html += '<span class="lp-cat-count">' + items.length + '</span>';
+        html += '<svg class="lp-chevron" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"/></svg>';
+        html += '</div>';
+        html += '<div class="lp-items">';
+
+        items.forEach(function (lib, idx) {
+          var src = lib.source || '';
+          var key = src;
+          libBySource[key] = lib;
+
+          var authors = (lib.authors || []).map(function (a) { return a.name; }).join(', ') || 'Community';
+          var name = (lib.name || 'Library').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+          var authorSafe = authors.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+          var preview = lib.preview || '';
+          var encodedSrc = encodeURIComponent(src);
+
+          html += '<div class="lp-item">';
+          html += '<div class="lp-thumb">';
+          if (preview) {
+            html += '<img src="' + preview + '" alt="' + name + '" loading="lazy" />';
+          } else {
+            html += '<span class="lp-thumb-placeholder">◻</span>';
+          }
+          html += '</div>';
+          html += '<div class="lp-info"><div class="lp-name" title="' + name + '">' + name + '</div>';
+          html += '<div class="lp-author">' + authorSafe + '</div></div>';
+          html += '<button class="lp-add" data-src="' + encodedSrc + '" onclick="doAdd(this)">Add</button>';
+          html += '</div>';
+        });
+
+        html += '</div></div>';
+      });
+
+      body.innerHTML = html || '<div class="lp-status">No libraries found.</div>';
+    }
+
+    window.toggleGroup = function (id) {
+      var el = document.getElementById(id);
+      if (el) el.classList.toggle('open');
+    };
+
+    // ── Search ────────────────────────────────────────────────────────────────
+    window.onSearch = function (q) {
+      if (!q.trim()) { renderLibs(allLibs); return; }
+      var lower = q.toLowerCase();
+      var filtered = allLibs.filter(function (lib) {
+        var haystack = [
+          lib.name || '',
+          lib.description || '',
+          (lib.authors || []).map(function (a) { return a.name; }).join(' '),
+          (lib.categories || lib.tags || []).join(' '),
+        ].join(' ').toLowerCase();
+        return haystack.indexOf(lower) !== -1;
+      });
+      renderLibs(filtered);
+    };
+
+    // ── Add library to canvas ─────────────────────────────────────────────────
+    window.doAdd = async function (btn) {
+      if (!api) {
+        showToast('Canvas is still initialising — try again in a moment.', 'bad');
+        return;
+      }
+      var src = decodeURIComponent(btn.dataset.src);
+      var lib = libBySource[src];
+      var name = (lib && lib.name) ? lib.name : 'Library';
+
+      btn.textContent = '…';
+      btn.disabled = true;
+
+      try {
+        var res = await fetch(src);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        var data = await res.json();
+
+        var items;
+        if (data.libraryItems) {
+          items = data.libraryItems;
+        } else if (data.library) {
+          // Legacy version 1 format
+          items = data.library.map(function (elements, i) {
+            return { id: 'lib-' + Date.now() + '-' + i, status: 'unpublished', elements: elements };
+          });
+        } else {
+          throw new Error('Unrecognised library format');
+        }
+
+        await api.updateLibrary({
+          libraryItems: items,
+          merge: true,
+          openLibraryMenu: true,
+        });
+
+        btn.textContent = '✓';
+        btn.classList.add('done');
+        showToast('"' + name + '" added to library panel', 'ok');
+
+      } catch (err) {
+        console.error('Library load failed:', err);
+        btn.textContent = 'Retry';
+        btn.classList.add('err');
+        btn.disabled = false;
+        setTimeout(function () {
+          btn.textContent = 'Add';
+          btn.classList.remove('err');
+        }, 3500);
+        showToast(
+          'Could not load "' + name + '". ' +
+          '<a href="https://excalidraw.com/?addLibrary=' + encodeURIComponent(src) +
+          '" target="_blank" rel="noopener noreferrer" style="color:#CC4400;">Open in Excalidraw ↗</a>',
+          'bad'
+        );
+      }
+    };
+
+    // ── Toast ─────────────────────────────────────────────────────────────────
+    var toastTimer;
+    function showToast(msg, type) {
+      var el = document.getElementById('toast');
+      el.innerHTML = msg;
+      el.className = 'show ' + (type || '');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () { el.className = ''; }, 4000);
+    }
+
+    // ── Fetch library index ───────────────────────────────────────────────────
+    async function loadIndex() {
+      var res = await fetch('https://libraries.excalidraw.com/index.json');
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      var data = await res.json();
+      var list = Array.isArray(data) ? data : (data.libraries || []);
+      return list.filter(isSystemDesign);
+    }
+
+    // ── Boot ──────────────────────────────────────────────────────────────────
+    initExcalidraw();
+
+    loadIndex().then(function (libs) {
+      allLibs = libs;
+      renderLibs(libs);
+    }).catch(function (err) {
+      console.error('Could not load library index:', err);
+      document.getElementById('lib-body').innerHTML =
+        '<div class="lp-status">' +
+        'Could not load libraries.<br/>' +
+        '<a href="https://libraries.excalidraw.com" target="_blank" rel="noopener noreferrer">Browse manually ↗</a>' +
+        '</div>';
+    });
+
+  }());
+  </script>
+</body>
+</html>

@@ -21,6 +21,11 @@
       href="{{ '/blog/' | absolute_url }}"
       >Writing</a
     >
+    <a
+      class="sidebar-nav-item{% if page.url == '/excalidraw.html' %} active{% endif %}"
+      href="{{ '/excalidraw.html' | absolute_url }}"
+      >Excalidraw</a
+    >
 
     {% assign pages_list = site.pages | sort:"url" %}
     {% for node in pages_list %}
