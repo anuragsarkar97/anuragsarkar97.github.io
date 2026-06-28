@@ -12,4 +12,13 @@
 
     checkbox.checked = false;
   }, false);
+
+  // Dark mode toggle
+  var themeToggle = document.querySelector('.theme-toggle');
+  if (themeToggle) {
+    themeToggle.addEventListener('click', function() {
+      var isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+  }
 })(document);
