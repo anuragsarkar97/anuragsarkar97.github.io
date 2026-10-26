@@ -1,35 +1,31 @@
 <!DOCTYPE html>
-<html lang="en-us">
-
+<html lang="en">
   {% include head.html %}
-
   <body>
-
-    {% include sidebar.html %}
-
-    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
-         content to avoid any CSS collisions with our real content. -->
-    <div class="wrap">
-      <div class="masthead">
-        <div class="container">
-          <h3 class="masthead-title">
-            <a href="{{ '/' | absolute_url }}" title="Home">{{ site.title }}</a>
-            <small>{{ site.tagline }}</small>
-          </h3>
-          <button class="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
-            <svg class="theme-icon theme-icon-sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-            <svg class="theme-icon theme-icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-          </button>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <div class="site-shell">
+      <header class="site-header">
+        {% if page.title == 'Home' or page.title == 'Writing' %}
+        <h1 class="site-name">{{ site.title }}</h1>
+        {% else %}
+        <a class="site-name" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+        {% endif %}
+        <nav aria-label="Main navigation">
+          {% unless page.title == 'Home' or page.title == 'Writing' %}<a href="{{ '/' | relative_url }}">Writing</a>{% endunless %}
+          <a href="{{ '/about/' | relative_url }}"{% if page.title == 'About' %} aria-current="page"{% endif %}>About</a>
+        </nav>
+      </header>
+      <main id="main" tabindex="-1">{{ content }}</main>
+      <footer class="site-footer">
+        <div class="footer-links">
+          <a href="{{ '/papershelf/' | relative_url }}">Papershelf</a>
+          <a href="{{ '/atom.xml' | relative_url }}">Atom feed</a>
+          <a href="{{ site.author.url }}">GitHub</a>
+          <a href="mailto:{{ site.author.email }}">Email</a>
+          <a href="{{ '/excalidraw/' | relative_url }}">Drawing tool</a>
         </div>
-      </div>
-
-      <div class="container content">
-        {{ content }}
-      </div>
+        <button class="theme-toggle" type="button" hidden>Dark mode</button>
+      </footer>
     </div>
-
-    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
-
-    <script src="{{ '/public/js/script.js' | absolute_url }}"></script>
   </body>
 </html>

@@ -1,0 +1,9 @@
+---
+layout: null
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  {% for post in site.posts %}<url><loc>{{ post.url | absolute_url | xml_escape }}</loc><lastmod>{{ post.date | date_to_xmlschema }}</lastmod></url>{% endfor %}
+  {% assign routes = '/,/blog/,/about/,/papershelf/,/excalidraw/' | split: ',' %}
+  {% for route in routes %}<url><loc>{{ route | absolute_url | xml_escape }}</loc></url>{% endfor %}
+</urlset>

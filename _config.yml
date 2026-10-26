@@ -4,20 +4,21 @@ tagline: "Distributed systems & platform engineering"
 description: "Notes on distributed systems, platform engineering, and the craft of building software that lasts."
 url: https://anuragsarkar97.github.io
 baseurl: ""
-paginate: 7
-paginate_path: /blog/page:num/
 permalink: pretty
 
 # About/contact
 author:
-  name: Anurag sarkar
+  name: Anurag Sarkar
   url: https://github.com/anuragsarkar97
   email: sarkar.anurag@outlook.com
 
-# Gems
-plugins:
-  - jekyll-paginate
-
-# Custom vars
-version: 1.1.0
 google_analytics_id: G-8Q6FBPNNF2
+
+# Development files are not publication content.
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - docs
+  - scripts
+  - vendor

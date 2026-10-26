@@ -1,0 +1,12 @@
+<ol class="article-list" aria-label="Articles, newest first">
+  {% for post in site.posts %}
+  <li>
+    <article>
+      <h2><a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></h2>
+      <time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: "%B %-d, %Y" }}</time>
+    </article>
+  </li>
+  {% else %}
+  <li>No articles yet. Please check back soon.</li>
+  {% endfor %}
+</ol>

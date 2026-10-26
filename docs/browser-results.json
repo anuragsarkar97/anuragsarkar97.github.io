@@ -1,0 +1,149 @@
+{
+  "rendered": 88,
+  "axe": [
+    {
+      "route": "/",
+      "width": 390,
+      "mode": "dark",
+      "violations": []
+    },
+    {
+      "route": "/blog/",
+      "width": 390,
+      "mode": "dark",
+      "violations": []
+    },
+    {
+      "route": "/about/",
+      "width": 390,
+      "mode": "dark",
+      "violations": []
+    },
+    {
+      "route": "/papershelf/",
+      "width": 390,
+      "mode": "dark",
+      "violations": []
+    },
+    {
+      "route": "/404.html",
+      "width": 390,
+      "mode": "dark",
+      "violations": []
+    },
+    {
+      "route": "/2020/04/01/logging-pro/",
+      "width": 390,
+      "mode": "dark",
+      "violations": []
+    },
+    {
+      "route": "/2021/09/05/how-to-test/",
+      "width": 390,
+      "mode": "dark",
+      "violations": []
+    },
+    {
+      "route": "/2021/09/10/api-design/",
+      "width": 390,
+      "mode": "dark",
+      "violations": []
+    },
+    {
+      "route": "/2021/09/15/Service-Level-Resiliency/",
+      "width": 390,
+      "mode": "dark",
+      "violations": []
+    },
+    {
+      "route": "/2021/10/01/red-mretrics/",
+      "width": 390,
+      "mode": "dark",
+      "violations": []
+    },
+    {
+      "route": "/2023/04/13/200k-lines-of-code/",
+      "width": 390,
+      "mode": "dark",
+      "violations": []
+    },
+    {
+      "route": "/",
+      "width": 1440,
+      "mode": "light",
+      "violations": []
+    },
+    {
+      "route": "/blog/",
+      "width": 1440,
+      "mode": "light",
+      "violations": []
+    },
+    {
+      "route": "/about/",
+      "width": 1440,
+      "mode": "light",
+      "violations": []
+    },
+    {
+      "route": "/papershelf/",
+      "width": 1440,
+      "mode": "light",
+      "violations": []
+    },
+    {
+      "route": "/404.html",
+      "width": 1440,
+      "mode": "light",
+      "violations": []
+    },
+    {
+      "route": "/2020/04/01/logging-pro/",
+      "width": 1440,
+      "mode": "light",
+      "violations": []
+    },
+    {
+      "route": "/2021/09/05/how-to-test/",
+      "width": 1440,
+      "mode": "light",
+      "violations": []
+    },
+    {
+      "route": "/2021/09/10/api-design/",
+      "width": 1440,
+      "mode": "light",
+      "violations": []
+    },
+    {
+      "route": "/2021/09/15/Service-Level-Resiliency/",
+      "width": 1440,
+      "mode": "light",
+      "violations": []
+    },
+    {
+      "route": "/2021/10/01/red-mretrics/",
+      "width": 1440,
+      "mode": "light",
+      "violations": []
+    },
+    {
+      "route": "/2023/04/13/200k-lines-of-code/",
+      "width": 1440,
+      "mode": "light",
+      "violations": []
+    }
+  ],
+  "contentPreserved": 6,
+  "papersPreserved": 24,
+  "baselineErrorsWithRemoteResourcesBlocked": [
+    "tailwind is not defined",
+    "tailwind is not defined",
+    "tailwind is not defined",
+    "tailwind is not defined",
+    "tailwind is not defined",
+    "tailwind is not defined",
+    "tailwind is not defined",
+    "tailwind is not defined"
+  ]
+}

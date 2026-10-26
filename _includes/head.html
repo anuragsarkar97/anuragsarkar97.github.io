@@ -1,105 +1,30 @@
 <head>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="{% if page.dem %}{{ page.dem }}{% else %}{{ site.description }}{% endif %}">
-
-  <title>
-    {% if page.title == "Home" %}
-      {{ site.title }} &middot; {{ site.tagline }}
-    {% else %}
-      {{ page.title }} &middot; {{ site.title }}
-    {% endif %}
-  </title>
-
-  {% if page.url and site.baseurl %}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% assign description = page.dem | default: page.description | default: site.description %}
+  <meta name="description" content="{{ description | escape }}">
+  <title>{% if page.title == 'Home' %}{{ site.title | escape }} &middot; {{ site.tagline | escape }}{% else %}{{ page.title | escape }} &middot; {{ site.title | escape }}{% endif %}</title>
   <link rel="canonical" href="{{ page.url | absolute_url }}">
+  <meta property="og:title" content="{{ page.title | escape }} &middot; {{ site.title | escape }}">
+  <meta property="og:description" content="{{ description | escape }}">
+  <meta property="og:url" content="{{ page.url | absolute_url }}">
+  <meta property="og:type" content="{% if page.layout == 'post' %}article{% else %}website{% endif %}">
+  <link rel="stylesheet" href="{{ '/public/css/style.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/public/css/syntax.css' | relative_url }}">
+  <link rel="icon" href="{{ '/public/favicon.ico' | relative_url }}">
+  <link rel="apple-touch-icon" href="{{ '/public/apple-touch-icon-precomposed.png' | relative_url }}">
+  <link rel="alternate" type="application/atom+xml" title="{{ site.title | escape }}" href="{{ '/atom.xml' | relative_url }}">
+  <script>
+    try {
+      var theme = localStorage.getItem('theme');
+      if (theme === 'dark' || theme === 'light') document.documentElement.dataset.theme = theme;
+    } catch (e) { /* System preference still works when storage is unavailable. */ }
+  </script>
+  {% if page.layout == 'post' %}
+  <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"BlogPosting","headline":{{ page.title | jsonify }},"description":{{ description | jsonify }},"datePublished":{{ page.date | date_to_xmlschema | jsonify }},"author":{"@type":"Person","name":{{ site.author.name | jsonify }}},"mainEntityOfPage":{{ page.url | absolute_url | jsonify }}}
+  </script>
   {% endif %}
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
-
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            background: 'var(--background)',
-            foreground: 'var(--foreground)',
-            primary: {
-              DEFAULT: 'var(--primary)',
-              foreground: 'var(--primary-foreground)',
-            },
-            secondary: {
-              DEFAULT: 'var(--secondary)',
-              foreground: 'var(--secondary-foreground)',
-            },
-            muted: {
-              DEFAULT: 'var(--muted)',
-              foreground: 'var(--muted-foreground)',
-            },
-            accent: {
-              DEFAULT: 'var(--accent)',
-              foreground: 'var(--accent-foreground)',
-            },
-            destructive: {
-              DEFAULT: 'var(--destructive)',
-              foreground: 'var(--destructive-foreground)',
-            },
-            border: 'var(--border)',
-            input: 'var(--input)',
-            ring: 'var(--ring)',
-            card: {
-              DEFAULT: 'var(--card)',
-              foreground: 'var(--card-foreground)',
-            },
-            sidebar: {
-              DEFAULT: 'var(--sidebar)',
-              foreground: 'var(--sidebar-foreground)',
-              primary: 'var(--sidebar-primary)',
-              accent: 'var(--sidebar-accent)',
-              border: 'var(--sidebar-border)',
-            },
-          },
-          fontFamily: {
-            sans: ['Roboto', 'sans-serif'],
-            serif: ['Playfair Display', 'serif'],
-            mono: ['Fira Code', 'monospace'],
-          },
-          borderRadius: {
-            DEFAULT: 'var(--radius)',
-            sm: 'calc(var(--radius) - 4px)',
-            md: 'calc(var(--radius) - 2px)',
-            lg: 'var(--radius)',
-            xl: 'calc(var(--radius) + 4px)',
-          },
-        },
-      },
-    }
-  </script>
-
-  <link rel="stylesheet" href="{{ '/public/css/theme.css' | absolute_url }}">
-  <link rel="stylesheet" href="{{ '/public/css/poole.css' | absolute_url }}">
-  <link rel="stylesheet" href="{{ '/public/css/syntax.css' | absolute_url }}">
-  <link rel="stylesheet" href="{{ '/public/css/lanyon.css' | absolute_url }}">
-
-  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ '/public/apple-touch-icon-precomposed.png' | absolute_url }}">
-  <link rel="shortcut icon" href="{{ '/public/favicon.ico' | absolute_url }}">
-  <link rel="alternate" type="application/rss+xml" title="RSS" href="{{ '/atom.xml' | absolute_url }}">
-
-  <!-- Dark mode: respect system preference -->
-  <script>
-    (function() {
-      var stored = localStorage.getItem('theme');
-      if (stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.documentElement.classList.add('dark');
-      }
-    })();
-  </script>
-
   {% if site.google_analytics_id %}
   <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics_id }}"></script>
   <script>
@@ -109,4 +34,5 @@
     gtag('config', '{{ site.google_analytics_id }}');
   </script>
   {% endif %}
+  <script defer src="{{ '/public/js/script.js' | relative_url }}"></script>
 </head>
