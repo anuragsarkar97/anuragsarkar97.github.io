@@ -16,9 +16,9 @@ disabled pagination/plugin, Tailwind CDN and web fonts were removed.
 
 | Uncompressed file size | Original Git HEAD | Final working tree |
 | --- | ---: | ---: |
-| Shared CSS | 32,659 bytes | 6,419 bytes |
-| Shared UI source | 47,666 bytes | 13,456 bytes |
-| Homepage HTML | 13,308 bytes | 3,760 bytes |
+| Shared CSS | 32,659 bytes | 7,106 bytes |
+| Shared UI source | 47,666 bytes | 16,895 bytes |
+| Homepage HTML | 13,308 bytes | 3,802 bytes |
 
 Shared UI means includes, layouts, both indexes, CSS and JavaScript. It excludes
 content, the standalone drawing app, build tooling and documentation. These are
@@ -65,3 +65,40 @@ production hosting were not tested. No deploy, commit or push was performed.
 `papershelf.md`, head metadata, Atom/sitemap/robots, Jekyll build manifest and
 `scripts/check_site.rb`. The old sidebar include and three obsolete theme
 stylesheets were deleted. `README.md` documents authoring and local builds.
+
+## Markdown editor
+The `/editor/` page, linked as Write in the footer, has title, publication date,
+optional description and a Markdown text area. One current draft is saved in
+localStorage on this browser/origin. Downloads contain escaped Jekyll front matter
+and a dated slug filename. No backend or publish API was added; preview and direct saving are described below.
+Editor JavaScript only loads on this route; the page is noindex and does not load
+analytics. Browser storage is convenience, not a backup: download a copy to keep.
+
+Verified `node scripts/check_editor.js`, a 13-page production build and local-link
+checks. Chrome tests covered required/whitespace validation, reload restoration,
+Unicode/quoted metadata, correct downloaded filename and body, blocked storage
+with working downloads, and four mobile/desktop light/dark axe checks with no
+violations. Desktop/mobile screenshots were inspected. The actual downloaded
+file was built in a temporary site with seven articles; metadata, syntax
+highlighting, index, feed and sitemap checks passed. No test article was added
+to the real repository. Publishing remains the normal `_posts/` + GitHub flow.
+
+## Direct saving and live preview
+Added native folder selection with read/write access to the selected `_posts/`
+folder, confirmed replacement of existing files, handling for cancelled pickers,
+wrong folders, denied access and aborted writes. The chosen handle stays in
+memory for this page session. Download remains the unsupported-browser fallback.
+The live preview uses locally vendored Marked 18.1.1 in an opaque-origin iframe
+with scripts disabled and a restrictive CSP. It shares the blog's reading styles.
+Markdown and preview are adjacent above 800px and stack below that width.
+
+Verified unit checks for folder reuse, successful writes, overwrite acceptance
+and refusal, wrong folders, cancellation, permission errors and write abort.
+Chrome integration exercised Markdown headings, lists, links, code and tables;
+a mocked folder picker drove the actual save button and wrote the resulting
+file to a temporary `_posts/` directory through a test binding. Native directory
+picker interaction and permissions were not automated. Four editor responsive/
+theme/axe checks passed with zero violations; script injection could not affect
+the parent page, and unsupported-folder-API messaging was verified. Production
+build and local links passed. Desktop and mobile screenshots were inspected.
+No repository article was created by these tests.

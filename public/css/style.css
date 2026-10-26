@@ -92,6 +92,24 @@ th { background: var(--wash); }
 .paper-year, .paper-meta, .paper-venue { font-size: .875rem; color: var(--muted); }
 .paper-meta { margin-bottom: .75rem; }
 .paper-desc { font-size: 1rem; margin-bottom: .75rem; }
+#post-editor label { display: block; margin-bottom: .25rem; }
+#post-editor input, #post-editor textarea { display: block; width: 100%; padding: .625rem; margin-bottom: 1.25rem; border: 1px solid var(--muted); border-radius: 0; background: var(--paper); color: var(--ink); font: inherit; }
+#post-editor textarea { font: 1rem/1.65 var(--mono); resize: vertical; min-height: 16rem; tab-size: 4; }
+#post-editor button { min-height: 44px; padding: .5rem .75rem; background: var(--wash); color: var(--ink); border: 1px solid var(--muted); font: inherit; cursor: pointer; }
+.editor-note, #post-editor label span { color: var(--muted); font-size: .875rem; }
+.editor-note { margin-top: .75rem; }
+.editor-page .site-shell { max-width: 76rem; width: calc(100% - 3rem); }
+.editor-metadata { display: grid; grid-template-columns: minmax(0, 1fr) 12rem; gap: 0 1.5rem; max-width: 38rem; }
+.editor-description { grid-column: 1 / -1; }
+.editor-columns { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 2rem; }
+.editor-preview h2 { margin: 0 0 .25rem; font-size: 1.125rem; font-weight: normal; line-height: inherit; }
+.editor-preview iframe { width: 100%; height: 32rem; margin: 0; border: 1px solid var(--muted); }
+#post-editor textarea { height: 32rem; }
+.editor-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.5rem; }
+@media (max-width: 50rem) {
+  .editor-columns, .editor-metadata { grid-template-columns: minmax(0, 1fr); }
+  .editor-page .site-shell { width: calc(100% - 2.5rem); }
+}
 @media (max-width: 36rem) {
   .site-shell { width: calc(100% - 2.5rem); margin-block: 1.5rem; }
   .site-header { flex-wrap: wrap; gap: .5rem 1rem; margin-bottom: 2rem; }

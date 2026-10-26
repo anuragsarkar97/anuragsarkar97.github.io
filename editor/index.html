@@ -1,0 +1,45 @@
+---
+layout: page
+title: Write a post
+description: A small Markdown editor for drafting a new blog post.
+editor: true
+---
+<p>Write in Markdown and save into <code>_posts/</code>. Choose that folder the first time you save, then publish the site as usual.</p>
+<noscript><p>This editor needs JavaScript. You can also create a Markdown file directly in <code>_posts/</code>.</p></noscript>
+<form id="post-editor" hidden>
+  <div class="editor-metadata">
+  <div>
+  <label for="post-title">Title</label>
+  <input id="post-title" name="title" type="text" required autocomplete="off">
+
+  </div>
+  <div>
+  <label for="post-date">Publication date</label>
+  <input id="post-date" name="date" type="date" required min="1900-01-01" max="9999-12-31">
+
+  </div>
+  <div class="editor-description">
+  <label for="post-description">Short description <span>(optional)</span></label>
+  <input id="post-description" name="description" type="text" autocomplete="off">
+
+  </div>
+  </div>
+  <div class="editor-columns">
+  <div>
+  <label for="post-body">Markdown</label>
+  <textarea id="post-body" name="body" rows="18" required spellcheck="true" aria-describedby="markdown-help"></textarea>
+  <p id="markdown-help" class="editor-note">Use ## for headings, **bold**, [links](https://example.com), and fenced code blocks with a language name.</p>
+
+  </div>
+  <section class="editor-preview" aria-labelledby="preview-heading">
+    <h2 id="preview-heading">Preview</h2>
+    <iframe id="post-preview" title="Markdown preview" sandbox="" data-stylesheet="{{ '/public/css/style.css' | relative_url }}"></iframe>
+  </section>
+  </div>
+  <div class="editor-actions">
+    <button id="save-post" type="submit" name="action" value="save" disabled>Save to posts folder</button>
+    <button type="submit" name="action" value="download">Download Markdown</button>
+  </div>
+  <p id="folder-help" class="editor-note" hidden>Folder saving is unavailable in this browser. Use Download Markdown, or open this editor in Chrome.</p>
+  <p id="draft-status" class="editor-note" role="status">Your draft stays in this browser. Save a file to keep it.</p>
+</form>
