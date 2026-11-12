@@ -10,22 +10,18 @@
   <meta property="og:url" content="{{ page.url | absolute_url }}">
   <meta property="og:type" content="{% if page.layout == 'post' %}article{% else %}website{% endif %}">
   <link rel="stylesheet" href="{{ '/public/css/style.css' | relative_url }}">
+  <meta name="theme-color" content="#101311">
   <link rel="stylesheet" href="{{ '/public/css/syntax.css' | relative_url }}">
   <link rel="icon" href="{{ '/public/favicon.ico' | relative_url }}">
   <link rel="apple-touch-icon" href="{{ '/public/apple-touch-icon-precomposed.png' | relative_url }}">
   <link rel="alternate" type="application/atom+xml" title="{{ site.title | escape }}" href="{{ '/atom.xml' | relative_url }}">
-  <script>
-    try {
-      var theme = localStorage.getItem('theme');
-      if (theme === 'dark' || theme === 'light') document.documentElement.dataset.theme = theme;
-    } catch (e) { /* System preference still works when storage is unavailable. */ }
-  </script>
+
   {% if page.layout == 'post' %}
   <script type="application/ld+json">
     {"@context":"https://schema.org","@type":"BlogPosting","headline":{{ page.title | jsonify }},"description":{{ description | jsonify }},"datePublished":{{ page.date | date_to_xmlschema | jsonify }},"author":{"@type":"Person","name":{{ site.author.name | jsonify }}},"mainEntityOfPage":{{ page.url | absolute_url | jsonify }}}
   </script>
   {% endif %}
-  {% if site.google_analytics_id and page.editor != true %}
+  {% if site.google_analytics_id %}
   <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics_id }}"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -35,9 +31,4 @@
   </script>
   {% endif %}
   <script defer src="{{ '/public/js/script.js' | relative_url }}"></script>
-  {% if page.editor %}
-  <meta name="robots" content="noindex">
-  <script defer src="{{ '/public/js/vendor/marked-18.1.1.js' | relative_url }}"></script>
-  <script defer src="{{ '/public/js/editor.js' | relative_url }}"></script>
-  {% endif %}
 </head>

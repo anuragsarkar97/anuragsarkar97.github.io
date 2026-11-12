@@ -1,9 +1,5 @@
-/* Rouge token groups use the same accessible palette in both themes. */
-.highlight { --syntax-key: #285c85; --syntax-string: #805031; --syntax-comment: #62665f; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .highlight { --syntax-key: #9bc5df; --syntax-string: #e0b68e; --syntax-comment: #adb2a8; }
-}
-[data-theme="dark"] .highlight { --syntax-key: #9bc5df; --syntax-string: #e0b68e; --syntax-comment: #adb2a8; }
+/* Dark green syntax, close to the Oxide console palette. */
+.highlight { --syntax-key: #8fef9a; --syntax-string: #d5e7c4; --syntax-comment: #7d857c; }
 .highlight .k, .highlight .kd, .highlight .kn, .highlight .kp, .highlight .kr,
 .highlight .kt, .highlight .kc, .highlight .nf, .highlight .nb { color: var(--syntax-key); }
 .highlight .s, .highlight .s1, .highlight .s2, .highlight .sb, .highlight .sc,

@@ -1,31 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
   {% include head.html %}
-  <body{% if page.editor %} class="editor-page"{% endif %}>
+  <body>
     <a class="skip-link" href="#main">Skip to content</a>
     <div class="site-shell">
       <header class="site-header">
-        {% if page.title == 'Home' or page.title == 'Writing' %}
+        {% if page.title == 'Home' %}
         <h1 class="site-name">{{ site.title }}</h1>
         {% else %}
         <a class="site-name" href="{{ '/' | relative_url }}">{{ site.title }}</a>
         {% endif %}
         <nav aria-label="Main navigation">
-          {% unless page.title == 'Home' or page.title == 'Writing' %}<a href="{{ '/' | relative_url }}">Writing</a>{% endunless %}
+          {% unless page.title == 'Home' %}<a href="{{ '/' | relative_url }}">Writing</a>{% endunless %}
           <a href="{{ '/about/' | relative_url }}"{% if page.title == 'About' %} aria-current="page"{% endif %}>About</a>
         </nav>
       </header>
       <main id="main" tabindex="-1">{{ content }}</main>
       <footer class="site-footer">
         <div class="footer-links">
-          <a href="{{ '/editor/' | relative_url }}">Write</a>
-          <a href="{{ '/papershelf/' | relative_url }}">Papershelf</a>
           <a href="{{ '/atom.xml' | relative_url }}">Atom feed</a>
           <a href="{{ site.author.url }}">GitHub</a>
           <a href="mailto:{{ site.author.email }}">Email</a>
-          <a href="{{ '/excalidraw/' | relative_url }}">Drawing tool</a>
         </div>
-        <button class="theme-toggle" type="button" hidden>Dark mode</button>
       </footer>
     </div>
   </body>

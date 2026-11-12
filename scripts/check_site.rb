@@ -13,13 +13,10 @@ abort 'Build the site first.' if files.empty?
 files.each do |file|
   html = File.read(file)
   route = '/' + Pathname.new(file).relative_path_from(root).to_s.sub(/index\.html$/, '')
-  # The independent drawing app has its own markup and external assets.
-  unless route == '/excalidraw/'
-    errors << "#{route}: expected one H1" unless html.scan(/<h1\b/i).size == 1
-    errors << "#{route}: missing main landmark" unless html.include?('<main ')
-    errors << "#{route}: missing canonical" unless html.include?(%(<link rel="canonical" href="#{origin}#{route}">))
-    errors << "#{route}: missing description" unless html.match?(/<meta name="description" content="[^"]+">/)
-  end
+  errors << "#{route}: expected one H1" unless html.scan(/<h1\b/i).size == 1
+  errors << "#{route}: missing main landmark" unless html.include?('<main ')
+  errors << "#{route}: missing canonical" unless html.include?(%(<link rel="canonical" href="#{origin}#{route}">))
+  errors << "#{route}: missing description" unless html.match?(/<meta name="description" content="[^"]+">/)
   html.scan(/(?:href|src)="([^"]+)"/).flatten.each do |raw|
     href = CGI.unescapeHTML(raw)
     next if href.start_with?('mailto:', 'data:', 'javascript:', '//')
@@ -54,10 +51,8 @@ urls = REXML::XPath.match(sitemap, '//*[local-name()="loc"]').map(&:text)
 entries.each do |entry|
   url = entry.elements['link'].attributes['href']
   errors << "Article missing from sitemap: #{url}" unless urls.include?(url)
-  ['index.html', 'blog/index.html'].each do |index|
-    path = URI(url).path
-    errors << "Article missing from #{index}: #{path}" unless File.read(root.join(index)).include?(%(href="#{path}"))
-  end
+  path = URI(url).path
+  errors << "Article missing from the home page: #{path}" unless File.read(root.join('index.html')).include?(%(href="#{path}"))
 end
 abort errors.join("\n") unless errors.empty?
 puts "PASS: #{files.size} HTML pages, #{posts.size} articles, local links and anchors, canonical URLs, metadata, JSON-LD, Atom and sitemap."

@@ -16,51 +16,30 @@ Open http://localhost:4000. Production build and validation:
 ```sh
 JEKYLL_ENV=production bundle exec jekyll build --strict_front_matter
 bundle exec ruby scripts/check_site.rb _site
-ruby scripts/check_notes.rb
-node scripts/check_editor.js
+python3 scripts/check_notes.py
 ```
 
-## Publish an article
+## Write a note
 
-Open `/editor/` (the **Write** footer link). Write Markdown on the left and see
-its rendered preview on the right; narrow screens stack the two panes.
-Click **Save to posts folder** and choose this repository's `_posts/` directory.
-The chosen folder is reused until the page reloads. Existing filenames require
-confirmation before replacement. This uses the browser's File System Access API;
-unsupported browsers retain **Download Markdown** as a fallback.
+```sh
+python3 scripts/new_note.py "Title of the note"
+python3 scripts/check_notes.py
+```
 
-Save does not commit, push or publish. Build and publish through the usual GitHub
-workflow after saving. Future-dated posts need a rebuild on/after their date.
-One current draft is saved in this browser only; save a file before clearing
-browser data or switching browsers. The sandboxed preview supports Markdown;
-Jekyll/Liquid processing and server syntax highlighting happen at build time.
+`new_note.py` writes `_posts/YYYY-MM-DD-title.md` from `docs/note-template.md`. Open with the problem, then Example, Determinations, Open questions, and External references. `check_notes.py` fails when a note drops that shape. Both scripts use the Python standard library.
 
-New notes follow `docs/note-template.md`: the problem first, then an example, determinations, open questions, and external references. The editor writes `style: rfd`. `ruby scripts/check_notes.rb` fails when a note with that flag drops a required section. Older posts stay as they are until you add the flag.
-
-Alternatively, add `_posts/YYYY-MM-DD-slug.md` with `layout: post`, `title` and `dem` (the search description). Dates come from the filename. Existing URLs
-use `/YYYY/MM/DD/slug/`; keep filenames stable to preserve incoming links.
-Use language-labelled fences for code, ordinary paragraphs for prose, and H2
-for article sections. Existing article sources are preserved; the post layout
-normalizes legacy H1 sections and leaves their anchor IDs intact.
+Add the file, then build and publish through the usual GitHub workflow. Future-dated posts need a rebuild on or after their date. You can also add `_posts/YYYY-MM-DD-slug.md` by hand with `layout: post`, `title`, `dem`, and `style: rfd`. The date in the filename is the publication date, and the URL is `/YYYY/MM/DD/slug/`. Keep the filename once a note is published. Use a language name on code fences and `##` for sections.
 
 ## Structure
 
 - `_layouts/`: shared shell, article and content page.
-- `_includes/article-list.html`: both homepage and existing `/blog/` archive.
-- `public/css/style.css`: layout, typography, light/dark palettes, bibliography.
-- `public/css/syntax.css`: server-rendered Rouge syntax highlighting.
-- `public/js/script.js`: optional theme preference and keyboard scroll regions.
-- `editor/index.html`, `public/js/editor.js`: browser draft, sandboxed preview and Markdown file saving.
-- `papershelf.md`: research bibliography; `excalidraw.html`: independent drawing tool.
+- `_includes/article-list.html`: the list on the home page.
+- `public/css/style.css`: layout and typography.
+- `public/css/syntax.css`: Rouge syntax highlighting.
+- `public/js/script.js`: heading links and keyboard scroll regions.
+- `docs/note-template.md`: the shape of a new note.
 - `atom.xml`, `sitemap.xml`, `robots.txt`: discovery and syndication.
 
-The theme follows the operating system unless changed with the footer button.
 Reading and navigation work without JavaScript. Analytics is configured by
-`google_analytics_id` in `_config.yml`. GitHub Pages can build this repository
-with its existing Jekyll engine; no deployment settings were changed.
-
-See [the audit and plan](docs/redesign.md) and [validation results](docs/validation.md).
-The original theme’s MIT license remains in `LICENSE.md`.
-
-The editor vendors Marked 18.1.1 under `public/js/vendor/` with its license. It
-loads only on the editor page; the reading pages do not load a Markdown parser.
+`google_analytics_id` in `_config.yml`. GitHub Pages builds this repository
+with its existing Jekyll engine. The original theme’s MIT license remains in `LICENSE.md`.

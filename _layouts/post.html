@@ -3,7 +3,7 @@ layout: default
 ---
 <article>
   <header class="post-header">
-    <a class="back-link" href="{{ '/blog/' | relative_url }}">&larr; All writing</a>
+    <a class="back-link" href="{{ '/' | relative_url }}">&larr; All writing</a>
     <p class="doc-kicker">Note</p>
     <h1>{{ page.title | escape }}</h1>
     <dl class="doc-meta">
@@ -12,11 +12,7 @@ layout: default
       <div><dt>Author</dt><dd>{{ site.author.name | escape }}</dd></div>
     </dl>
   </header>
-  {% assign body = content %}
-  {% if body contains '<h1' %}
-    {% assign body = body | replace: '<h3', '<h4' | replace: '</h3>', '</h4>' | replace: '<h2', '<h3' | replace: '</h2>', '</h3>' | replace: '<h1', '<h2' | replace: '</h1>', '</h2>' %}
-  {% endif %}
-  <div class="prose">{{ body | replace: '<iframe ', '<iframe loading="lazy" title="Embedded animation" ' | replace: '<img ', '<img loading="lazy" decoding="async" ' }}</div>
+  <div class="prose">{{ content | replace: '<img ', '<img loading="lazy" decoding="async" ' }}</div>
 </article>
 {% if page.previous or page.next %}
 <nav class="next-reading" aria-label="More writing">
