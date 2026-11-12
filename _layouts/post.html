@@ -4,8 +4,13 @@ layout: default
 <article>
   <header class="post-header">
     <a class="back-link" href="{{ '/blog/' | relative_url }}">&larr; All writing</a>
+    <p class="doc-kicker">Note</p>
     <h1>{{ page.title | escape }}</h1>
-    <time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: "%B %-d, %Y" }}</time>
+    <dl class="doc-meta">
+      <div><dt>State</dt><dd>{{ page.state | default: "published" | escape }}</dd></div>
+      <div><dt>Updated</dt><dd><time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: "%B %-d, %Y" }}</time></dd></div>
+      <div><dt>Author</dt><dd>{{ site.author.name | escape }}</dd></div>
+    </dl>
   </header>
   {% assign body = content %}
   {% if body contains '<h1' %}

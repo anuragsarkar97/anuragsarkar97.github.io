@@ -25,6 +25,14 @@
     pre.setAttribute('role', 'region');
     pre.setAttribute('aria-label', 'Code or preformatted text');
   });
+  document.querySelectorAll('.prose h2[id], .prose h3[id]').forEach(function (heading) {
+    var link = document.createElement('a');
+    link.className = 'heading-anchor';
+    link.href = '#' + heading.id;
+    link.textContent = '#';
+    link.setAttribute('aria-label', 'Link to this section');
+    heading.appendChild(link);
+  });
   document.querySelectorAll('.prose table').forEach(function (table) {
     var scroll = document.createElement('div');
     scroll.className = 'table-scroll';

@@ -32,16 +32,37 @@
   var today = new Date();
   today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
   form.elements.date.value = today.toISOString().slice(0, 10);
+  var skeleton = [
+    'State the problem in one or two paragraphs. Say what is true, what fails, and why it matters.',
+    '',
+    '## Example',
+    '',
+    'One concrete case, in order.',
+    '',
+    '## Determinations',
+    '',
+    'What to do. Each item should stand on its own.',
+    '',
+    '## Open questions',
+    '',
+    'What is still unsettled.',
+    '',
+    '## External references',
+    '',
+    '- '
+  ].join('\n');
 
   try {
     var draft = JSON.parse(localStorage.getItem(key));
     if (draft && fields.every(function (name) { return typeof draft[name] === 'string'; })) {
       fields.forEach(function (name) { form.elements[name].value = draft[name]; });
+      if (!form.elements.body.value.trim()) form.elements.body.value = skeleton;
       status.textContent = 'Draft restored from this browser. Save a file to keep it.';
     }
   } catch (e) {
     status.textContent = 'Draft storage is unavailable. Save a file before leaving.';
   }
+  if (!form.elements.body.value.trim()) form.elements.body.value = skeleton;
   form.hidden = false;
   renderPreview();
   new MutationObserver(renderPreview).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
@@ -68,7 +89,8 @@
     var slug = title.normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
       .replace(/[^a-z0-9]+/g, '-').slice(0, 80).replace(/^-|-$/g, '') || 'post';
     var markdown = '---\nlayout: post\ntitle: ' + JSON.stringify(title) + '\ndem: ' +
-      JSON.stringify(form.elements.description.value.trim()) + '\n---\n\n' + body;
+      JSON.stringify(form.elements.description.value.trim()) +
+      '\nstate: discussion\nstyle: rfd\n---\n\n' + body;
     if (!markdown.endsWith('\n')) markdown += '\n';
     return { filename: form.elements.date.value + '-' + slug + '.md', markdown: markdown };
   }

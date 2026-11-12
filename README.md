@@ -16,6 +16,7 @@ Open http://localhost:4000. Production build and validation:
 ```sh
 JEKYLL_ENV=production bundle exec jekyll build --strict_front_matter
 bundle exec ruby scripts/check_site.rb _site
+ruby scripts/check_notes.rb
 node scripts/check_editor.js
 ```
 
@@ -33,6 +34,8 @@ workflow after saving. Future-dated posts need a rebuild on/after their date.
 One current draft is saved in this browser only; save a file before clearing
 browser data or switching browsers. The sandboxed preview supports Markdown;
 Jekyll/Liquid processing and server syntax highlighting happen at build time.
+
+New notes follow `docs/note-template.md`: the problem first, then an example, determinations, open questions, and external references. The editor writes `style: rfd`. `ruby scripts/check_notes.rb` fails when a note with that flag drops a required section. Older posts stay as they are until you add the flag.
 
 Alternatively, add `_posts/YYYY-MM-DD-slug.md` with `layout: post`, `title` and `dem` (the search description). Dates come from the filename. Existing URLs
 use `/YYYY/MM/DD/slug/`; keep filenames stable to preserve incoming links.
