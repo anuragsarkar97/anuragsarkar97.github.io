@@ -1,21 +1,21 @@
-<p class="results" id="note-count">Results: {{ site.posts.size }}</p>
-<div class="note-table-wrap">
-  <table class="note-table">
-    <thead>
-      <tr>
-        <th scope="col">Title</th>
-        <th scope="col">State</th>
-        <th scope="col">Updated</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for post in site.posts %}
-      <tr data-title="{{ post.title | downcase | escape }}">
-        <td><a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></td>
-        <td><span class="state state-{{ post.state | default: 'published' | downcase | escape }}">{{ post.state | default: "published" | escape }}</span></td>
-        <td><time datetime="{{ post.date | date: '%Y-%m-%d' }}">{{ post.date | date: "%b %-d, %Y" }}</time></td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
+{% if site.posts.size == 0 %}<p class="empty-archive">No notes published yet.</p>{% endif %}
+<ul class="list note-list{% if site.posts.size == 1 %} note-list-single{% endif %}">
+  {% for post in site.posts %}
+  <li class="card note-entry" data-search="{{ post.title | append: ' ' | append: post.dem | append: ' ' | append: post.content | strip_html | normalize_whitespace | escape }}">
+    {% assign emoji_path = post.emoji | default: 'memo' | prepend: '/public/emoji/' | append: '.png' %}
+    <div class="note-icon">
+      <img src="{{ emoji_path | relative_url | escape }}" alt="" width="24" height="24">
+    </div>
+    <div class="card-body">
+      <h2 class="card-title"><a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></h2>
+      <div class="note-meta">
+        <span>{{ post.author | default: site.author.name | escape }}</span>
+        <span aria-hidden="true"> · </span>
+        <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: '%d %b %Y' }}</time>
+      </div>
+      {% if post.dem %}<p>{{ post.dem | escape }}</p>{% endif %}
+    </div>
+    <span class="note-arrow" aria-hidden="true">→</span>
+  </li>
+  {% endfor %}
+</ul>

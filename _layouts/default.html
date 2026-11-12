@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="reader">
   {% include head.html %}
-  <body>
+  <body{% if page.url == '/' %} class="archive-page"{% elsif page.layout == 'post' %} class="post-page"{% endif %}>
     <a class="skip-link" href="#main">Skip to content</a>
-    <header class="topbar">
-      <a class="site-name" href="{{ '/' | relative_url }}">{{ site.title }}</a>
-      <nav aria-label="Main navigation">
-        {% unless page.title == 'Home' %}<a href="{{ '/' | relative_url }}">Notes</a>{% endunless %}
-        <a href="{{ site.author.url }}">GitHub</a>
-        <a href="mailto:{{ site.author.email }}">Email</a>
+    <header class="site-header">
+      <nav class="navbar site-width" aria-label="Main navigation">
+        <a class="site-name" href="{{ '/' | relative_url }}">{{ site.title | escape }}</a>
+        <div class="site-links">
+          <a href="{{ '/' | relative_url }}"{% if page.url == '/' %} aria-current="page"{% endif %}>Notes</a>
+          <a href="{{ '/' | relative_url }}#search">Search</a>
+          <a href="{{ site.author.url | escape }}">GitHub</a>
+        </div>
       </nav>
     </header>
-    <div class="site-shell">
-      <main id="main" tabindex="-1">{{ content }}</main>
-    </div>
+    <main id="main" class="site-width" tabindex="-1">{{ content }}</main>
   </body>
 </html>

@@ -2,11 +2,14 @@
 layout: default
 title: Home
 ---
-<div class="index-hero">
-  <h1>Notes</h1>
-  <label class="filter">
-    <span class="visually-hidden">Filter by title</span>
-    <input id="note-filter" type="search" placeholder="Filter by title" autocomplete="off">
-  </label>
-</div>
-{% include article-list.html %}
+<section class="archive" aria-labelledby="archive-title" id="notes">
+  <div class="archive-search" hidden>
+    <label for="search">Search notes</label>
+    <input class="input" id="search" type="search" placeholder="Search titles and article text" autocomplete="off">
+    <p id="search-status" class="note-meta" role="status"></p>
+  </div>
+  <header class="archive-header">
+    <h1 id="archive-title">Notes</h1>
+  </header>
+  {% include article-list.html %}
+</section>

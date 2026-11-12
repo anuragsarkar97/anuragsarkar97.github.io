@@ -1,25 +1,32 @@
 ---
 layout: default
 ---
-<article>
-  <header class="post-header">
-    <a class="back-link" href="{{ '/' | relative_url }}">All notes</a>
-    <p class="state">{{ page.state | default: "published" | escape }}</p>
+<article class="reading-layout">
+  <a class="back-link" href="{{ '/' | relative_url }}">← All notes</a>
+  <header class="article-header">
+    {% if page.state %}<p class="article-state">{{ page.state | escape }}</p>{% endif %}
     <h1>{{ page.title | escape }}</h1>
-    <dl class="meta-rows">
-      <div><dt>Author</dt><dd>{{ site.author.name | escape }}</dd></div>
-      <div><dt>Updated</dt><dd><time datetime="{{ page.date | date: '%Y-%m-%d' }}">{{ page.date | date: "%b %-d, %Y" }}</time></dd></div>
-    </dl>
+    {% if page.dem %}<p class="article-deck">{{ page.dem | escape }}</p>{% endif %}
   </header>
-  <div class="doc-layout">
-    <div class="prose">{{ content | replace: '<img ', '<img loading="lazy" decoding="async" ' }}</div>
-    <nav class="toc" aria-label="On this page" hidden></nav>
-  </div>
+  <dl class="article-meta">
+    <div>
+      <dt>Author</dt>
+      <dd>{{ page.author | default: site.author.name | escape }}</dd>
+    </div>
+    <div>
+      <dt>Published</dt>
+      <dd><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%b %-d, %Y' }}</time></dd>
+    </div>
+  </dl>
+  <nav class="article-outline" aria-label="On this page" hidden>
+    <details>
+      <summary>On this page</summary>
+      <div class="js-toc"></div>
+    </details>
+  </nav>
+  <div class="prose article-body">{{ content }}</div>
+  <footer class="article-footer">
+    {% if page.previous %}<a href="{{ page.previous.url | relative_url }}" rel="prev"><small>Older note</small>{{ page.previous.title | escape }}</a>{% endif %}
+    {% if page.next %}<a href="{{ page.next.url | relative_url }}" rel="next"><small>Newer note</small>{{ page.next.title | escape }}</a>{% endif %}
+  </footer>
 </article>
-{% if page.previous or page.next %}
-<nav class="next-reading" aria-label="More writing">
-  <h2>More notes</h2>
-  {% if page.previous %}<a href="{{ page.previous.url | relative_url }}">{{ page.previous.title | escape }}</a>{% endif %}
-  {% if page.next %}<a href="{{ page.next.url | relative_url }}">{{ page.next.title | escape }}</a>{% endif %}
-</nav>
-{% endif %}

@@ -1,62 +1,88 @@
-(function () {
-  var filter = document.getElementById('note-filter');
-  var count = document.getElementById('note-count');
-  if (filter && count) {
-    var rows = Array.prototype.slice.call(document.querySelectorAll('.note-table tbody tr'));
-    filter.addEventListener('input', function () {
-      var query = filter.value.trim().toLowerCase();
-      var shown = 0;
-      rows.forEach(function (row) {
-        var match = !query || row.getAttribute('data-title').indexOf(query) !== -1;
-        row.classList.toggle('is-hidden', !match);
-        if (match) shown += 1;
-      });
-      count.textContent = 'Results: ' + shown;
+const searchField = document.querySelector('#search');
+if (searchField && window.List) {
+  const notes = new List('notes', { valueNames: [{ data: ['search'] }] });
+  const status = document.querySelector('#search-status');
+  searchField.closest('.archive-search').hidden = false;
+
+  notes.on('searchComplete', () => {
+    const count = notes.matchingItems.length;
+    status.textContent = searchField.value.trim()
+      ? (count === 0 ? 'No matching notes.' : `${count} ${count === 1 ? 'note' : 'notes'} found.`)
+      : '';
+  });
+
+  searchField.addEventListener('input', () => notes.search(searchField.value.trim()));
+
+  const focusSearch = () => {
+    if (location.hash === '#search') searchField.focus();
+  };
+  focusSearch();
+  window.addEventListener('hashchange', focusSearch);
+}
+
+const headings = '.article-body :is(h2, h3, h4)';
+if (document.querySelector(headings)) {
+  const outline = document.querySelector('.article-outline');
+  if (window.tocbot && document.querySelector('.article-body :is(h2, h3, h4)[id]')) {
+    const disclosure = outline.querySelector('details');
+    const mobile = matchMedia('(max-width: 56rem)');
+    const updateOutline = () => {
+      disclosure.open = !mobile.matches;
+    };
+    updateOutline();
+    mobile.addEventListener('change', updateOutline);
+    disclosure.addEventListener('click', (event) => {
+      if (mobile.matches && event.target.closest('.js-toc a') &&
+          !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+        disclosure.open = false;
+      }
+    });
+    outline.hidden = false;
+    tocbot.init({
+      tocSelector: '.js-toc',
+      contentSelector: '.article-body',
+      headingSelector: 'h2[id], h3[id], h4[id]',
+      collapseDepth: 4,
+      headingsOffset: 110,
+      scrollSmooth: false,
     });
   }
 
-  var prose = document.querySelector('.prose');
-  if (!prose) return;
-
-  var toc = document.querySelector('.toc');
-  var heads = prose.querySelectorAll('h2[id], h3[id]');
-  if (toc && heads.length) {
-    var list = document.createElement('ol');
-    heads.forEach(function (heading) {
-      var item = document.createElement('li');
-      if (heading.tagName === 'H3') item.className = 'toc-h3';
-      var link = document.createElement('a');
-      link.href = '#' + heading.id;
-      link.textContent = heading.textContent;
-      item.appendChild(link);
-      list.appendChild(item);
-    });
-    toc.appendChild(list);
-    toc.hidden = false;
+  if (window.anchors) {
+    anchors.options = { placement: 'right', visible: 'always', icon: '#', ariaLabel: 'Link to this section' };
+    anchors.add(headings);
   }
 
-  prose.querySelectorAll('pre').forEach(function (pre) {
-    pre.tabIndex = 0;
-    pre.setAttribute('role', 'region');
-    pre.setAttribute('aria-label', 'Code');
-    var holder = pre.parentElement && pre.parentElement.classList.contains('highlight') ? pre.parentElement : pre;
-    var marked = pre.querySelector('[class*="language-"]') || pre;
-    var match = (marked.className || '').match(/language-([a-z0-9]+)/i);
-    if (!match || match[1] === 'plaintext') return;
-    var label = document.createElement('span');
-    label.className = 'code-label';
-    label.textContent = match[1];
-    if (getComputedStyle(holder).position === 'static') holder.style.position = 'relative';
-    holder.appendChild(label);
+  // The outline adds height above the article on narrow screens.
+  const target = document.querySelector('.article-body :target');
+  if (target) requestAnimationFrame(() => target.scrollIntoView());
+}
+
+for (const code of document.querySelectorAll('.article-body pre > code')) {
+  const block = code.parentElement;
+  block.tabIndex = 0;
+  if (!navigator.clipboard?.writeText) continue;
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'code-block';
+  const toolbar = document.createElement('div');
+  toolbar.className = 'code-toolbar';
+  const status = document.createElement('span');
+  status.setAttribute('role', 'status');
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.textContent = 'Copy code';
+
+  button.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(code.textContent);
+      status.textContent = 'Copied';
+    } catch {
+      status.textContent = 'Could not copy';
+    }
   });
 
-  prose.querySelectorAll('table').forEach(function (table) {
-    var scroll = document.createElement('div');
-    scroll.className = 'table-scroll';
-    scroll.tabIndex = 0;
-    scroll.setAttribute('role', 'region');
-    scroll.setAttribute('aria-label', 'Scrollable table');
-    table.before(scroll);
-    scroll.appendChild(table);
-  });
-})();
+  toolbar.append(status, button);
+  block.before(wrapper);
+  wrapper.append(toolbar, block);
+}

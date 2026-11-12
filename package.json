@@ -1,0 +1,18 @@
+{
+  "private": true,
+  "scripts": {
+    "css": "npm run assets && tailwindcss -i src/app.css -o public/css/app.css --minify",
+    "assets": "sh scripts/copy_reader_assets.sh"
+  },
+  "devDependencies": {
+    "@fontsource-variable/roboto": "^5.3.0",
+    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@tailwindcss/cli": "^4.3.5",
+    "@tailwindcss/typography": "^0.5.20",
+    "anchor-js": "^5.0.0",
+    "daisyui": "^5.7.50",
+    "list.js": "^2.3.1",
+    "tailwindcss": "^4.3.5",
+    "tocbot": "^4.36.8"
+  }
+}

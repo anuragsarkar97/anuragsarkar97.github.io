@@ -1,9 +1,0 @@
-/* Dark green syntax, close to the Oxide console palette. */
-.highlight { --syntax-key: #8fef9a; --syntax-string: #d5e7c4; --syntax-comment: #7d857c; }
-.highlight .k, .highlight .kd, .highlight .kn, .highlight .kp, .highlight .kr,
-.highlight .kt, .highlight .kc, .highlight .nf, .highlight .nb { color: var(--syntax-key); }
-.highlight .s, .highlight .s1, .highlight .s2, .highlight .sb, .highlight .sc,
-.highlight .si, .highlight .se, .highlight .m, .highlight .mi, .highlight .mf { color: var(--syntax-string); }
-.highlight .c, .highlight .c1, .highlight .cm, .highlight .cp { color: var(--syntax-comment); font-style: italic; }
-.highlight .ge { font-style: italic; }
-.highlight .gs { font-weight: bold; }

@@ -1,6 +1,5 @@
 # Setup
 title: Anurag Sarkar
-tagline: "Distributed systems & platform engineering"
 description: "Notes on distributed systems, platform engineering, and the craft of building software that lasts."
 url: https://anuragsarkar97.github.io
 baseurl: ""
@@ -21,4 +20,8 @@ exclude:
   - README.md
   - docs
   - scripts
+  - node_modules
+  - package.json
+  - package-lock.json
+  - src
   - vendor
