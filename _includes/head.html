@@ -10,11 +10,10 @@
   <meta property="og:url" content="{{ page.url | absolute_url }}">
   <meta property="og:type" content="{% if page.layout == 'post' %}article{% else %}website{% endif %}">
   <link rel="stylesheet" href="{{ '/public/css/style.css' | relative_url }}">
-  <meta name="theme-color" content="#101311">
+  <meta name="theme-color" content="#101110">
   <link rel="stylesheet" href="{{ '/public/css/syntax.css' | relative_url }}">
   <link rel="icon" href="{{ '/public/favicon.ico' | relative_url }}">
   <link rel="apple-touch-icon" href="{{ '/public/apple-touch-icon-precomposed.png' | relative_url }}">
-  <link rel="alternate" type="application/atom+xml" title="{{ site.title | escape }}" href="{{ '/atom.xml' | relative_url }}">
 
   {% if page.layout == 'post' %}
   <script type="application/ld+json">

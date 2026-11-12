@@ -3,26 +3,16 @@
   {% include head.html %}
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
+    <header class="topbar">
+      <a class="site-name" href="{{ '/' | relative_url }}">{{ site.title }}</a>
+      <nav aria-label="Main navigation">
+        {% unless page.title == 'Home' %}<a href="{{ '/' | relative_url }}">Notes</a>{% endunless %}
+        <a href="{{ site.author.url }}">GitHub</a>
+        <a href="mailto:{{ site.author.email }}">Email</a>
+      </nav>
+    </header>
     <div class="site-shell">
-      <header class="site-header">
-        {% if page.title == 'Home' %}
-        <h1 class="site-name">{{ site.title }}</h1>
-        {% else %}
-        <a class="site-name" href="{{ '/' | relative_url }}">{{ site.title }}</a>
-        {% endif %}
-        <nav aria-label="Main navigation">
-          {% unless page.title == 'Home' %}<a href="{{ '/' | relative_url }}">Writing</a>{% endunless %}
-          <a href="{{ '/about/' | relative_url }}"{% if page.title == 'About' %} aria-current="page"{% endif %}>About</a>
-        </nav>
-      </header>
       <main id="main" tabindex="-1">{{ content }}</main>
-      <footer class="site-footer">
-        <div class="footer-links">
-          <a href="{{ '/atom.xml' | relative_url }}">Atom feed</a>
-          <a href="{{ site.author.url }}">GitHub</a>
-          <a href="mailto:{{ site.author.email }}">Email</a>
-        </div>
-      </footer>
     </div>
   </body>
 </html>

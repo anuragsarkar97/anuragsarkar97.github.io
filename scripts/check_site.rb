@@ -42,17 +42,18 @@ files.each do |file|
     errors << "#{route}: incorrect article URL" unless data['mainEntityOfPage'] == origin + route
   end
 end
-feed = REXML::Document.new(File.read(root.join('atom.xml')).strip)
 sitemap = REXML::Document.new(File.read(root.join('sitemap.xml')).strip)
-entries = REXML::XPath.match(feed, '//*[local-name()="entry"]')
 posts = Dir[root.join('[0-9][0-9][0-9][0-9]/**/index.html')]
-errors << 'Feed entry count differs from published articles' unless entries.size == posts.size
 urls = REXML::XPath.match(sitemap, '//*[local-name()="loc"]').map(&:text)
-entries.each do |entry|
-  url = entry.elements['link'].attributes['href']
+home = File.read(root.join('index.html'))
+posts.each do |file|
+  html = File.read(file)
+  url = html[/rel="canonical" href="([^"]+)"/, 1]
+  errors << "Article missing a canonical URL: #{file}" unless url
+  next unless url
   errors << "Article missing from sitemap: #{url}" unless urls.include?(url)
   path = URI(url).path
-  errors << "Article missing from the home page: #{path}" unless File.read(root.join('index.html')).include?(%(href="#{path}"))
+  errors << "Article missing from the home page: #{path}" unless home.include?(%(href="#{path}"))
 end
 abort errors.join("\n") unless errors.empty?
-puts "PASS: #{files.size} HTML pages, #{posts.size} articles, local links and anchors, canonical URLs, metadata, JSON-LD, Atom and sitemap."
+puts "PASS: #{files.size} HTML pages, #{posts.size} articles, local links and anchors, canonical URLs, metadata, JSON-LD and sitemap."

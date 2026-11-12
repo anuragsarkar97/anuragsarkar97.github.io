@@ -2,5 +2,11 @@
 layout: default
 title: Home
 ---
-<p class="lede">Notes on distributed systems and platform engineering. A note states the problem, walks one case, and ends with a determination.</p>
+<div class="index-hero">
+  <h1>Notes</h1>
+  <label class="filter">
+    <span class="visually-hidden">Filter by title</span>
+    <input id="note-filter" type="search" placeholder="Filter by title" autocomplete="off">
+  </label>
+</div>
 {% include article-list.html %}

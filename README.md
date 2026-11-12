@@ -38,7 +38,7 @@ Add the file, then build and publish through the usual GitHub workflow. Future-d
 - `public/css/syntax.css`: Rouge syntax highlighting.
 - `public/js/script.js`: heading links and keyboard scroll regions.
 - `docs/note-template.md`: the shape of a new note.
-- `atom.xml`, `sitemap.xml`, `robots.txt`: discovery and syndication.
+- `sitemap.xml`, `robots.txt`: discovery.
 
 Reading and navigation work without JavaScript. Analytics is configured by
 `google_analytics_id` in `_config.yml`. GitHub Pages builds this repository
