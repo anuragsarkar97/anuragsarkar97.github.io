@@ -2,14 +2,20 @@
 layout: default
 title: Home
 ---
-<section class="archive" aria-labelledby="archive-title" id="notes">
-  <div class="archive-search" hidden>
-    <label for="search">Search notes</label>
-    <input class="input" id="search" type="search" placeholder="Search titles and article text" autocomplete="off">
-    <p id="search-status" class="note-meta" role="status"></p>
-  </div>
-  <header class="archive-header">
+<section class="archive" id="notes" aria-labelledby="archive-title">
+  <header class="home-bar">
     <h1 id="archive-title">Notes</h1>
+    <div class="search-field">
+      <label class="sr-only" for="search">Search</label>
+      <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"></circle>
+        <path d="M16 16.5 20 20.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+      </svg>
+      <input class="input" id="search" type="search" placeholder="Search" autocomplete="off" enterkeyhint="search" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="search-list">
+      <span class="search-hint" aria-hidden="true">&#8984;K</span>
+      <ul class="search-menu" id="search-list" role="listbox" hidden></ul>
+    </div>
   </header>
+  <p id="search-status" class="search-status" role="status"></p>
   {% include article-list.html %}
 </section>

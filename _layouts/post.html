@@ -1,32 +1,56 @@
 ---
 layout: default
 ---
-<article class="reading-layout">
-  <a class="back-link" href="{{ '/' | relative_url }}">← All notes</a>
-  <header class="article-header">
-    {% if page.state %}<p class="article-state">{{ page.state | escape }}</p>{% endif %}
-    <h1>{{ page.title | escape }}</h1>
-    {% if page.dem %}<p class="article-deck">{{ page.dem | escape }}</p>{% endif %}
-  </header>
-  <dl class="article-meta">
-    <div>
-      <dt>Author</dt>
-      <dd>{{ page.author | default: site.author.name | escape }}</dd>
-    </div>
-    <div>
-      <dt>Published</dt>
-      <dd><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: '%b %-d, %Y' }}</time></dd>
-    </div>
-  </dl>
-  <nav class="article-outline" aria-label="On this page" hidden>
-    <details>
-      <summary>On this page</summary>
-      <div class="js-toc"></div>
-    </details>
-  </nav>
-  <div class="prose article-body">{{ content }}</div>
-  <footer class="article-footer">
-    {% if page.previous %}<a href="{{ page.previous.url | relative_url }}" rel="prev"><small>Older note</small>{{ page.previous.title | escape }}</a>{% endif %}
-    {% if page.next %}<a href="{{ page.next.url | relative_url }}" rel="next"><small>Newer note</small>{{ page.next.title | escape }}</a>{% endif %}
-  </footer>
+<article class="article">
+  <p class="crumb">
+    <a class="btn btn-ghost btn-circle btn-sm crumb-back" href="{{ '/' | relative_url }}" aria-label="Back">
+      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+        <path d="M14.5 6.5 8.5 12l6 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+      </svg>
+    </a>
+    <a href="{{ '/' | relative_url }}">Blog</a>
+    <span aria-hidden="true">/</span>
+    <span>{% if page.topic %}{{ page.topic | escape }}{% elsif page.state %}{{ page.state | capitalize }}{% else %}Notes{% endif %}</span>
+  </p>
+  <div class="article-frame">
+    <header class="article-header">
+      <h1>{{ page.title | escape }}</h1>
+      {% if page.dem %}<p class="article-dek">{{ page.dem | escape }}</p>{% endif %}
+      {% include cover.html note=page class="article-cover" %}
+    </header>
+    <aside class="article-rail">
+      <div>
+        <p class="rail-label">Date</p>
+        <p class="rail-value"><time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%A, %B %-d, %Y" }}</time></p>
+      </div>
+      <div>
+        <p class="rail-label">Tags</p>
+        <p class="rail-value">{% if page.topic %}{{ page.topic | escape }}{% elsif page.state %}{{ page.state | capitalize }}{% else %}Note{% endif %}</p>
+      </div>
+      <nav class="article-outline" aria-label="On this page" hidden>
+        <details>
+          <summary>On this page</summary>
+          <div class="js-toc menu menu-sm"></div>
+        </details>
+      </nav>
+    </aside>
+    <div class="prose article-body">{{ content }}</div>
+    <footer class="article-footer">
+      {% if page.previous or page.next %}
+      <div class="pager">
+        {% if page.previous %}<a href="{{ page.previous.url | relative_url }}" rel="prev"><small>Older note</small>{{ page.previous.title | escape }}</a>{% endif %}
+        {% if page.next %}<a href="{{ page.next.url | relative_url }}" rel="next"><small>Newer note</small>{{ page.next.title | escape }}</a>{% endif %}
+      </div>
+      {% endif %}
+      <div class="share-row">
+        <span class="share-status" role="status"></span>
+        <button type="button" class="btn btn-sm share-note" data-url="{{ page.url | absolute_url }}">
+          Share this note
+          <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+            <path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </button>
+      </div>
+    </footer>
+  </div>
 </article>

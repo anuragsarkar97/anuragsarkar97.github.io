@@ -5,9 +5,10 @@
   <meta name="description" content="{{ description | escape }}">
   <title>{% if page.title == 'Home' %}{{ site.title | escape }}{% else %}{{ page.title | escape }} &middot; {{ site.title | escape }}{% endif %}</title>
   <link rel="canonical" href="{{ page.url | absolute_url }}">
-  <meta name="theme-color" content="#000000">
+  <meta name="theme-color" content="#ffffff">
   <link rel="stylesheet" href="{{ '/public/css/app.css' | relative_url }}">
-  <link rel="icon" href="{{ '/public/favicon.ico' | relative_url }}">
+  <link rel="icon" href="{{ '/public/favicon.ico' | relative_url }}" sizes="48x48">
+  <link rel="apple-touch-icon" href="{{ '/public/apple-touch-icon-precomposed.png' | relative_url }}">
   {% if page.url == '/' %}
   <script defer src="{{ '/public/vendor/list.min.js' | relative_url }}"></script>
   {% elsif page.layout == 'post' %}

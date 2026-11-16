@@ -30,7 +30,7 @@ python3 scripts/check_notes.py
 
 `new_note.py` writes `_posts/YYYY-MM-DD-title.md` from `docs/note-template.md`. Open with the problem, then Example, Determinations, Open questions, and External references. `check_notes.py` fails when a note drops that shape. Both scripts use the Python standard library.
 
-Add the file, then build and publish through the usual GitHub workflow. Future-dated posts need a rebuild on or after their date. You can also add `_posts/YYYY-MM-DD-slug.md` by hand with `layout: post`, `title`, `dem`, and `style: rfd`. The date in the filename is the publication date, and the URL is `/YYYY/MM/DD/slug/`. Keep the filename once a note is published. Set optional `emoji` to a GitHub emoji shortcode without colons, such as `lock`. Add its PNG to `public/emoji/` using the shortcode as the filename. Notes default to `memo`. Use a language name on code fences and `##` for sections.
+Add the file, then build and publish through the usual GitHub workflow. Future-dated posts need a rebuild on or after their date. You can also add `_posts/YYYY-MM-DD-slug.md` by hand with `layout: post`, `title`, `dem`, and `style: rfd`. The date in the filename is the publication date, and the URL is `/YYYY/MM/DD/slug/`. Keep the filename once a note is published. Use a language name on code fences and `##` for sections. Set `topic` to Systems, Platforms, or Craft when the note has one.
 
 ## Structure
 

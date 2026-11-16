@@ -1,0 +1,1 @@
+<img class="{{ include.class }}" src="{{ '/public/images/notes/' | append: include.note.slug | append: '.svg' | relative_url }}" alt="" width="1200" height="800" decoding="async"{% if include.eager %} loading="eager" fetchpriority="high"{% else %} loading="lazy"{% endif %}>

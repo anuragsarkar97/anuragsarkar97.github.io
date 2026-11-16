@@ -2,12 +2,15 @@
 set -eu
 
 mkdir -p public/fonts public/vendor
-for font in roboto-latin-wght-normal roboto-latin-wght-italic; do
-  cp "node_modules/@fontsource-variable/roboto/files/$font.woff2" public/fonts/
+rm -f public/fonts/roboto-* public/fonts/ibm-plex-*
+for font in geist-latin-wght-normal geist-latin-wght-italic; do
+  cp "node_modules/@fontsource-variable/geist/files/$font.woff2" public/fonts/
 done
-cp node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff2 public/fonts/
-cp node_modules/@fontsource-variable/roboto/LICENSE public/fonts/roboto-LICENSE.txt
-cp node_modules/@fontsource/ibm-plex-mono/LICENSE public/fonts/ibm-plex-mono-LICENSE.txt
+for font in geist-mono-latin-wght-normal geist-mono-latin-wght-italic; do
+  cp "node_modules/@fontsource-variable/geist-mono/files/$font.woff2" public/fonts/
+done
+cp node_modules/@fontsource-variable/geist/LICENSE public/fonts/geist-LICENSE.txt
+cp node_modules/@fontsource-variable/geist-mono/LICENSE public/fonts/geist-mono-LICENSE.txt
 cp node_modules/list.js/dist/list.min.js public/vendor/
 cp node_modules/tocbot/dist/tocbot.min.js public/vendor/
 cp node_modules/anchor-js/anchor.min.js public/vendor/

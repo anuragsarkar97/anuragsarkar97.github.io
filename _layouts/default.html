@@ -1,18 +1,31 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="reader">
+<html lang="en" data-theme="xblog">
   {% include head.html %}
-  <body{% if page.url == '/' %} class="archive-page"{% elsif page.layout == 'post' %} class="post-page"{% endif %}>
-    <a class="skip-link" href="#main">Skip to content</a>
-    <header class="site-header">
-      <nav class="navbar site-width" aria-label="Main navigation">
-        <a class="site-name" href="{{ '/' | relative_url }}">{{ site.title | escape }}</a>
-        <div class="site-links">
-          <a href="{{ '/' | relative_url }}"{% if page.url == '/' %} aria-current="page"{% endif %}>Notes</a>
-          <a href="{{ '/' | relative_url }}#search">Search</a>
-          <a href="{{ site.author.url | escape }}">GitHub</a>
-        </div>
+  <body{% if page.url == '/' %} class="archive-page"{% elsif page.layout == 'post' %} class="post-page"{% else %} class="plain-page-body"{% endif %}>
+    <a class="btn btn-neutral skip-link" href="#main">Skip to main content</a>
+    <div class="shell">
+      <nav class="rail" aria-label="Main navigation">
+        <a class="brand" href="{{ '/' | relative_url }}">
+          <span class="brand-name">Anurag</span>
+          <span class="brand-rule" aria-hidden="true"></span>
+          <span class="brand-word">Blog</span>
+        </a>
+        <ul class="menu menu-vertical site-nav">
+          <li><a href="{{ '/' | relative_url }}"{% if page.url == '/' %} aria-current="page"{% endif %}>Home</a></li>
+          <li><a href="{{ site.author.url | escape }}">GitHub</a></li>
+          <li><a href="mailto:{{ site.author.email | escape }}">Email</a></li>
+        </ul>
       </nav>
-    </header>
-    <main id="main" class="site-width" tabindex="-1">{{ content }}</main>
+      <div class="shell-main">
+        <main id="main" tabindex="-1">{{ content }}</main>
+        <footer class="site-footer">
+          <p class="footer-note">{{ site.description | escape }}</p>
+          <nav class="footer" aria-label="Contact">
+            <a class="link link-hover" href="mailto:{{ site.author.email | escape }}">Email</a>
+            <a class="link link-hover" href="{{ site.author.url | escape }}">GitHub</a>
+          </nav>
+        </footer>
+      </div>
+    </div>
   </body>
 </html>

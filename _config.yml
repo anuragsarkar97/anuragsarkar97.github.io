@@ -11,8 +11,6 @@ author:
   url: https://github.com/anuragsarkar97
   email: sarkar.anurag@outlook.com
 
-google_analytics_id: G-8Q6FBPNNF2
-
 # Development files are not publication content.
 exclude:
   - Gemfile

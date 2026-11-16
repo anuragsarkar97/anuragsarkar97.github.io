@@ -2,11 +2,13 @@
   "private": true,
   "scripts": {
     "css": "npm run assets && tailwindcss -i src/app.css -o public/css/app.css --minify",
-    "assets": "sh scripts/copy_reader_assets.sh"
+    "assets": "sh scripts/copy_reader_assets.sh",
+    "new-post": "python3 scripts/new_note.py",
+    "images": "python3 scripts/note_images.py"
   },
   "devDependencies": {
-    "@fontsource-variable/roboto": "^5.3.0",
-    "@fontsource/ibm-plex-mono": "^5.3.0",
+    "@fontsource-variable/geist": "^5.3.0",
+    "@fontsource-variable/geist-mono": "^5.3.0",
     "@tailwindcss/cli": "^4.3.5",
     "@tailwindcss/typography": "^0.5.20",
     "anchor-js": "^5.0.0",

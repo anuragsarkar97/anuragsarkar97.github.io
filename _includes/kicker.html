@@ -1,0 +1,5 @@
+<p class="kicker">
+  <span class="kicker-name">{% if include.note.topic %}{{ include.note.topic | escape }}{% elsif include.note.state %}{{ include.note.state | capitalize }}{% else %}Note{% endif %}</span>
+  {% if include.hero %}<span class="kicker-dot" aria-hidden="true">&middot;</span>{% endif %}
+  <time datetime="{{ include.note.date | date_to_xmlschema }}">{{ include.note.date | date: "%b %-d, %Y" }}</time>
+</p>

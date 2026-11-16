@@ -2,3 +2,5 @@ _site
 .sass-cache
 .venv
 node_modules
+__pycache__/
+.DS_Store

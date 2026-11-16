@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" fill="none">
+  <rect width="1200" height="640" fill="#d9e2ea"/>
+  <text x="72" y="78" fill="#17202a" font-family="system-ui, sans-serif" font-size="28" font-weight="650">Caller</text>
+  <text x="72" y="248" fill="#17202a" font-family="system-ui, sans-serif" font-size="28" font-weight="650">Broker</text>
+  <text x="72" y="418" fill="#17202a" font-family="system-ui, sans-serif" font-size="28" font-weight="650">Disk</text>
+  <path d="M250 108 H1100" stroke="#17202a" stroke-width="2"/>
+  <path d="M250 278 H1100" stroke="#17202a" stroke-width="2"/>
+  <path d="M250 448 H1100" stroke="#17202a" stroke-width="2"/>
+  <path d="M760 72 V520" stroke="#163e66" stroke-width="2" stroke-dasharray="6 8"/>
+  <text x="776" y="548" fill="#163e66" font-family="system-ui, sans-serif" font-size="22">caller leaves</text>
+  <circle cx="320" cy="108" r="11" fill="#17202a"/>
+  <text x="300" y="156" fill="#17202a" font-family="system-ui, sans-serif" font-size="20">send</text>
+  <circle cx="560" cy="108" r="11" fill="#163e66"/>
+  <text x="528" y="156" fill="#17202a" font-family="system-ui, sans-serif" font-size="20">ack</text>
+  <circle cx="760" cy="108" r="11" fill="#fff" stroke="#163e66" stroke-width="3"/>
+  <circle cx="360" cy="278" r="11" fill="#17202a"/>
+  <text x="328" y="326" fill="#17202a" font-family="system-ui, sans-serif" font-size="20">append</text>
+  <circle cx="560" cy="278" r="11" fill="#163e66"/>
+  <text x="500" y="326" fill="#17202a" font-family="system-ui, sans-serif" font-size="20">ack memory</text>
+  <circle cx="560" cy="448" r="11" fill="#163e66"/>
+  <text x="512" y="496" fill="#17202a" font-family="system-ui, sans-serif" font-size="20">write starts</text>
+  <circle cx="980" cy="448" r="11" fill="#8a3e24"/>
+  <text x="944" y="496" fill="#17202a" font-family="system-ui, sans-serif" font-size="20">ENOSPC</text>
+  <path d="M320 108 C340 108 340 278 360 278" stroke="#17202a" stroke-width="2"/>
+  <path d="M560 278 V108" stroke="#163e66" stroke-width="2"/>
+  <path d="M560 278 V448" stroke="#163e66" stroke-width="2"/>
+</svg>
